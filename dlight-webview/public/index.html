@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>小路光 Dlight</title>
+<script src="config.js"></script>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body { font-family:-apple-system,'PingFang TC','Noto Sans TC',sans-serif; background:#F7F8FA; color:#1C1C1E; min-height:100vh; }
+
+.risk-bar { padding:14px 20px; display:flex; align-items:center; gap:12px; transition:background 0.4s; }
+.risk-bar.low   { background:#EAF6EC; }
+.risk-bar.watch { background:#FFF5E5; }
+.risk-bar.alert { background:#FDEBEB; }
+.risk-indicator { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.low   .risk-indicator { background:#34C759; }
+.watch .risk-indicator { background:#FF9500; animation:blink 1.5s infinite; }
+.alert .risk-indicator { background:#FF3B30; animation:blink 0.8s infinite; }
+@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
+.risk-text-wrap { flex:1; }
+.risk-level-text { font-size:13px; font-weight:700; }
+.low   .risk-level-text { color:#1A7A32; }
+.watch .risk-level-text { color:#CC5500; }
+.alert .risk-level-text { color:#CC1800; }
+.risk-reason { font-size:12px; color:#666; margin-top:2px; line-height:1.4; }
+.risk-time   { font-size:10px; color:#aaa; margin-top:2px; }
+
+.ai-badge {
+  font-size:9px; padding:2px 6px; border-radius:8px;
+  background:#F0F0F0; color:#999; margin-left:4px; vertical-align:middle;
+}
+
+.section-label { font-size:11px; font-weight:700; color:#8E8E93; letter-spacing:0.6px; text-transform:uppercase; padding:16px 20px 8px; }
+
+.stat-row { display:flex; gap:8px; padding:0 20px 16px; }
+.stat-card { flex:1; background:#fff; border-radius:14px; padding:14px 12px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+.stat-val  { font-size:24px; font-weight:700; letter-spacing:-0.5px; }
+.stat-name { font-size:11px; color:#8E8E93; margin-top:3px; }
+.stat-diff { font-size:10px; margin-top:4px; font-weight:600; }
+.diff-ok   { color:#34C759; }
+.diff-warn { color:#FF9500; }
+.diff-bad  { color:#FF3B30; }
+
+.scenario-list { padding:0 20px 16px; display:flex; flex-direction:column; gap:10px; }
+.scenario-card { background:#fff; border-radius:14px; padding:14px 16px; display:flex; align-items:flex-start; gap:12px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border-left:4px solid #E5E5EA; }
+.scenario-card.low   { border-left-color:#34C759; }
+.scenario-card.watch { border-left-color:#FF9500; }
+.scenario-card.alert { border-left-color:#FF3B30; }
+.sc-icon { font-size:24px; padding-top:2px; flex-shrink:0; }
+.sc-body { flex:1; }
+.sc-name { font-size:14px; font-weight:600; }
+.sc-desc { font-size:12px; color:#555; margin-top:4px; line-height:1.5; }
+.sc-time { font-size:10px; color:#aaa; margin-top:4px; }
+.sc-badge { font-size:10px; font-weight:700; padding:3px 9px; border-radius:20px; flex-shrink:0; }
+.badge-low   { background:#EAF6EC; color:#1A7A32; }
+.badge-watch { background:#FFF5E5; color:#CC5500; }
+.badge-alert { background:#FDEBEB; color:#CC1800; }
+
+.report-btn { margin:0 20px 24px; background:linear-gradient(135deg,#1C3A5E 0%,#2D6A9F 100%); border-radius:16px; padding:18px 20px; color:#fff; display:flex; align-items:center; justify-content:space-between; cursor:pointer; text-decoration:none; }
+.report-btn-title { font-size:15px; font-weight:700; }
+.report-btn-sub   { font-size:12px; opacity:0.75; margin-top:3px; }
+.report-btn-arrow { font-size:22px; opacity:0.6; }
+
+.settings-fab { position:fixed; bottom:28px; right:20px; width:50px; height:50px; background:#2D6A9F; border-radius:25px; display:flex; align-items:center; justify-content:center; font-size:22px; box-shadow:0 4px 16px rgba(45,106,159,0.35); cursor:pointer; color:#fff; z-index:10; }
+
+.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:50; align-items:flex-end; }
+.modal-bg.open { display:flex; }
+.modal-panel { background:#fff; width:100%; border-radius:24px 24px 0 0; padding:24px 20px 44px; }
+.modal-title { font-size:18px; font-weight:700; margin-bottom:20px; }
+.field { margin-bottom:16px; }
+.field label { font-size:13px; color:#666; display:block; margin-bottom:6px; }
+.field input { width:100%; padding:11px 14px; border:1.5px solid #E5E5EA; border-radius:11px; font-size:15px; outline:none; font-family:inherit; }
+.field input:focus { border-color:#2D6A9F; }
+.btn-save { width:100%; background:#2D6A9F; color:#fff; border:none; padding:15px; border-radius:13px; font-size:16px; font-weight:700; cursor:pointer; margin-top:8px; font-family:inherit; }
+.loading-text { text-align:center; color:#aaa; padding:32px; font-size:14px; }
+</style>
+</head>
+<body>
+
+<div id="risk-bar" class="risk-bar low">
+  <div class="risk-indicator"></div>
+  <div class="risk-text-wrap">
+    <div>
+      <span class="risk-level-text" id="risk-label">載入中...</span>
+      <span class="ai-badge" id="ai-badge"></span>
+    </div>
+    <div class="risk-reason" id="risk-reason"></div>
+    <div class="risk-time"   id="risk-time"></div>
+  </div>
+</div>
+
+<div class="section-label">今日數據摘要</div>
+<div class="stat-row">
+  <div class="stat-card">
+    <div class="stat-val"  id="s-motion">—</div>
+    <div class="stat-name">今日移動次數</div>
+    <div class="stat-diff" id="s-motion-diff"></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val"  id="s-last">—</div>
+    <div class="stat-name">最後移動</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val"  id="s-wakeup">—</div>
+    <div class="stat-name">起床時間</div>
+    <div class="stat-diff" id="s-wakeup-diff"></div>
+  </div>
+</div>
+
+<div class="section-label">五大情境監測</div>
+<div class="scenario-list" id="scenario-list">
+  <div class="loading-text">資料載入中...</div>
+</div>
+
+<a class="report-btn" href="report.html">
+  <div>
+    <div class="report-btn-title">📋 昨日健康報告</div>
+    <div class="report-btn-sub" id="report-preview">AI 自動生成的昨日摘要</div>
+  </div>
+  <div class="report-btn-arrow">›</div>
+</a>
+
+<div class="settings-fab" onclick="openSettings()">⚙</div>
+
+<div class="modal-bg" id="settings-modal">
+  <div class="modal-panel">
+    <div class="modal-title">作息基本設定</div>
+    <div class="field"><label>長輩稱呼</label><input type="text"   id="f-name"      value="爸爸"></div>
+    <div class="field"><label>平常起床時間</label><input type="time"   id="f-wakeup"    value="07:50"></div>
+    <div class="field"><label>午休開始時間</label><input type="time"   id="f-nap-start" value="13:00"></div>
+    <div class="field"><label>午休時長（分鐘）</label><input type="number" id="f-nap-dur"   value="90" min="0" max="300"></div>
+    <div class="field"><label>慣常外出 開始</label><input type="time"   id="f-out-start" value="09:00"></div>
+    <div class="field"><label>慣常外出 結束</label><input type="time"   id="f-out-end"   value="11:00"></div>
+    <button class="btn-save" onclick="saveSettings()">儲存設定</button>
+  </div>
+</div>
+
+<script>
+const SB_URL = DLIGHT_CONFIG.SUPABASE_URL;
+const SB_KEY = DLIGHT_CONFIG.SUPABASE_ANON_KEY;
+const UID = new URLSearchParams(location.search).get('uid') || 1;
+
+const RISK = {
+  low:   { label:'狀態良好', barClass:'low',   badgeClass:'badge-low' },
+  watch: { label:'觀察中',   barClass:'watch', badgeClass:'badge-watch' },
+  alert: { label:'需要關注', barClass:'alert', badgeClass:'badge-alert' }
+};
+const ICONS = {1:'🌙',2:'☀️',3:'🚶',4:'🚪',5:'📋'};
+const NAMES = {1:'夜間起床陪伴',2:'早晨起床確認',3:'日間活動量監測',4:'離開安全區域',5:'每日健康報告'};
+
+async function sbGet(table, params='') {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
+    headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`}
+  });
+  return r.json();
+}
+
+function fmtTime(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+async function loadAll() {
+  const today = new Date().toISOString().slice(0,10);
+
+  const decisions = await sbGet('ai_decisions',`user_id=eq.${UID}&order=created_at.desc&limit=1`);
+  const latest = decisions[0];
+  const riskKey = latest?.risk_level || 'low';
+  const riskInfo = RISK[riskKey];
+  const bar = document.getElementById('risk-bar');
+  bar.className = `risk-bar ${riskInfo.barClass}`;
+  document.getElementById('risk-label').textContent = riskInfo.label;
+  document.getElementById('risk-reason').textContent = latest?.ai_reasoning || '目前無異常紀錄';
+  document.getElementById('risk-time').textContent = latest ? `更新於 ${fmtTime(latest.created_at)}` : '';
+  // 顯示 AI 來源 badge
+  const aiBadge = document.getElementById('ai-badge');
+  if (latest?.ai_source === 'claude_fallback') {
+    aiBadge.textContent = 'Claude 備用';
+    aiBadge.style.background = '#FFF5E5';
+    aiBadge.style.color = '#CC5500';
+  } else if (latest?.ai_source) {
+    aiBadge.textContent = 'DeepSeek';
+    aiBadge.style.background = '#E8F4FD';
+    aiBadge.style.color = '#0066CC';
+  }
+
+  const events = await sbGet('sensor_events',`user_id=eq.${UID}&triggered_at=gte.${today}T00:00:00&order=triggered_at.desc`);
+  document.getElementById('s-motion').textContent = events.length;
+  document.getElementById('s-last').textContent = events[0] ? fmtTime(events[0].triggered_at) : '—';
+
+  const wakeupEvent = events.filter(e =>
+    ['motion_corridor','door_bedroom'].includes(e.device_type) &&
+    new Date(e.triggered_at).getHours() >= 5 &&
+    new Date(e.triggered_at).getHours() <= 11
+  ).pop();
+  document.getElementById('s-wakeup').textContent = wakeupEvent ? fmtTime(wakeupEvent.triggered_at) : '—';
+
+  const allDecisions = await sbGet('ai_decisions',`user_id=eq.${UID}&created_at=gte.${today}T00:00:00&order=created_at.desc`);
+  const latestByScenario = {};
+  allDecisions.forEach(d => { if (!latestByScenario[d.scenario]) latestByScenario[d.scenario] = d; });
+
+  const list = document.getElementById('scenario-list');
+  list.innerHTML = '';
+  [1,2,3,4,5].forEach(i => {
+    const d = latestByScenario[i];
+    const rk = d?.risk_level || 'low';
+    const ri = RISK[rk];
+    list.innerHTML += `
+      <div class="scenario-card ${rk}">
+        <div class="sc-icon">${ICONS[i]}</div>
+        <div class="sc-body">
+          <div class="sc-name">${NAMES[i]}</div>
+          <div class="sc-desc">${d?.ai_reasoning || '等待觸發中'}</div>
+          <div class="sc-time">${d ? `最後更新：${fmtTime(d.created_at)}` : '今日尚無觸發'}</div>
+        </div>
+        <div class="sc-badge ${ri.badgeClass}">${ri.label}</div>
+      </div>`;
+  });
+
+  const yesterday = new Date(Date.now()-864e5).toISOString().slice(0,10);
+  const reports = await sbGet('daily_reports',`user_id=eq.${UID}&report_date=eq.${yesterday}`);
+  if (reports[0]) {
+    document.getElementById('report-preview').textContent =
+      reports[0].risk_summary === 'normal' ? '昨日狀況正常，點此查看詳情' : '昨日有需要關注的項目，點此查看';
+  }
+}
+
+function openSettings() { document.getElementById('settings-modal').classList.add('open'); }
+document.getElementById('settings-modal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
+
+async function saveSettings() {
+  await fetch(`${SB_URL}/rest/v1/user_settings`, {
+    method:'POST',
+    headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},
+    body:JSON.stringify({
+      user_id:parseInt(UID),
+      elder_name:document.getElementById('f-name').value,
+      wakeup_time:document.getElementById('f-wakeup').value,
+      nap_start:document.getElementById('f-nap-start').value,
+      nap_duration_min:parseInt(document.getElementById('f-nap-dur').value),
+      outing_start:document.getElementById('f-out-start').value,
+      outing_end:document.getElementById('f-out-end').value,
+      updated_at:new Date().toISOString()
+    })
+  });
+  document.getElementById('settings-modal').classList.remove('open');
+  alert('設定已儲存，AI 將以此為初始基準');
+}
+
+loadAll();
+setInterval(loadAll, DLIGHT_CONFIG.REFRESH_INTERVAL_MS);
+</script>
+</body>
+</html>

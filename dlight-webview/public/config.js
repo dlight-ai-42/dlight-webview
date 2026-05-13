@@ -1,0 +1,6 @@
+const DLIGHT_CONFIG = {
+  SUPABASE_URL: 'https://FILL_LATER.supabase.co',
+  SUPABASE_ANON_KEY: 'FILL_LATER',
+  ELDER_NAME: '爸爸',
+  REFRESH_INTERVAL_MS: 60000
+};
