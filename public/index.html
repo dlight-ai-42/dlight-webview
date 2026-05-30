@@ -4,134 +4,524 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>小路光 Dlight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <script src="config.js"></script>
 <style>
-* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
-body { font-family:-apple-system,'PingFang TC','Noto Sans TC',sans-serif; background:#F7F8FA; color:#1C1C1E; min-height:100vh; }
-
-.risk-bar { padding:14px 20px; display:flex; align-items:center; gap:12px; transition:background 0.4s; }
-.risk-bar.low   { background:#EAF6EC; }
-.risk-bar.watch { background:#FFF5E5; }
-.risk-bar.alert { background:#FDEBEB; }
-.risk-indicator { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-.low   .risk-indicator { background:#34C759; }
-.watch .risk-indicator { background:#FF9500; animation:blink 1.5s infinite; }
-.alert .risk-indicator { background:#FF3B30; animation:blink 0.8s infinite; }
-@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
-.risk-text-wrap { flex:1; }
-.risk-level-text { font-size:13px; font-weight:700; }
-.low   .risk-level-text { color:#1A7A32; }
-.watch .risk-level-text { color:#CC5500; }
-.alert .risk-level-text { color:#CC1800; }
-.risk-reason { font-size:12px; color:#666; margin-top:2px; line-height:1.4; }
-.risk-time   { font-size:10px; color:#aaa; margin-top:2px; }
-
-.ai-badge {
-  font-size:9px; padding:2px 6px; border-radius:8px;
-  background:#F0F0F0; color:#999; margin-left:4px; vertical-align:middle;
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --card: #1C2128;
+  --border: rgba(255,255,255,0.06);
+  --text: #E6EDF3;
+  --text-muted: #7D8590;
+  --text-dim: #484F58;
+  --green: #3FB950;
+  --green-bg: rgba(63,185,80,0.1);
+  --amber: #F0883E;
+  --amber-bg: rgba(240,136,62,0.1);
+  --red: #F85149;
+  --red-bg: rgba(248,81,73,0.1);
+  --blue: #58A6FF;
+  --blue-bg: rgba(88,166,255,0.08);
+  --radius: 12px;
 }
 
-.section-label { font-size:11px; font-weight:700; color:#8E8E93; letter-spacing:0.6px; text-transform:uppercase; padding:16px 20px 8px; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 
-.stat-row { display:flex; gap:8px; padding:0 20px 16px; }
-.stat-card { flex:1; background:#fff; border-radius:14px; padding:14px 12px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
-.stat-val  { font-size:24px; font-weight:700; letter-spacing:-0.5px; }
-.stat-name { font-size:11px; color:#8E8E93; margin-top:3px; }
-.stat-diff { font-size:10px; margin-top:4px; font-weight:600; }
-.diff-ok   { color:#34C759; }
-.diff-warn { color:#FF9500; }
-.diff-bad  { color:#FF3B30; }
+body {
+  font-family:'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
 
-.scenario-list { padding:0 20px 16px; display:flex; flex-direction:column; gap:10px; }
-.scenario-card { background:#fff; border-radius:14px; padding:14px 16px; display:flex; align-items:flex-start; gap:12px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border-left:4px solid #E5E5EA; }
-.scenario-card.low   { border-left-color:#34C759; }
-.scenario-card.watch { border-left-color:#FF9500; }
-.scenario-card.alert { border-left-color:#FF3B30; }
-.sc-icon { font-size:24px; padding-top:2px; flex-shrink:0; }
-.sc-body { flex:1; }
-.sc-name { font-size:14px; font-weight:600; }
-.sc-desc { font-size:12px; color:#555; margin-top:4px; line-height:1.5; }
-.sc-time { font-size:10px; color:#aaa; margin-top:4px; }
-.sc-badge { font-size:10px; font-weight:700; padding:3px 9px; border-radius:20px; flex-shrink:0; }
-.badge-low   { background:#EAF6EC; color:#1A7A32; }
-.badge-watch { background:#FFF5E5; color:#CC5500; }
-.badge-alert { background:#FDEBEB; color:#CC1800; }
+/* Header */
+.header {
+  padding: 20px 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-.report-btn { margin:0 20px 24px; background:linear-gradient(135deg,#1C3A5E 0%,#2D6A9F 100%); border-radius:16px; padding:18px 20px; color:#fff; display:flex; align-items:center; justify-content:space-between; cursor:pointer; text-decoration:none; }
-.report-btn-title { font-size:15px; font-weight:700; }
-.report-btn-sub   { font-size:12px; opacity:0.75; margin-top:3px; }
-.report-btn-arrow { font-size:22px; opacity:0.6; }
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-.settings-fab { position:fixed; bottom:28px; right:20px; width:50px; height:50px; background:#2D6A9F; border-radius:25px; display:flex; align-items:center; justify-content:center; font-size:22px; box-shadow:0 4px 16px rgba(45,106,159,0.35); cursor:pointer; color:#fff; z-index:10; }
+.logo-dot {
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+}
 
-.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:50; align-items:flex-end; }
-.modal-bg.open { display:flex; }
-.modal-panel { background:#fff; width:100%; border-radius:24px 24px 0 0; padding:24px 20px 44px; }
-.modal-title { font-size:18px; font-weight:700; margin-bottom:20px; }
-.field { margin-bottom:16px; }
-.field label { font-size:13px; color:#666; display:block; margin-bottom:6px; }
-.field input { width:100%; padding:11px 14px; border:1.5px solid #E5E5EA; border-radius:11px; font-size:15px; outline:none; font-family:inherit; }
-.field input:focus { border-color:#2D6A9F; }
-.btn-save { width:100%; background:#2D6A9F; color:#fff; border:none; padding:15px; border-radius:13px; font-size:16px; font-weight:700; cursor:pointer; margin-top:8px; font-family:inherit; }
-.loading-text { text-align:center; color:#aaa; padding:32px; font-size:14px; }
+@keyframes pulse-dot {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(1.4); }
+}
+
+.logo-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+
+.logo-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.header-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* Status Bar */
+.status-bar {
+  margin: 16px 20px 0;
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--border);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+}
+
+.status-bar.low { background: var(--green-bg); border-color: rgba(63,185,80,0.2); }
+.status-bar.watch { background: var(--amber-bg); border-color: rgba(240,136,62,0.2); }
+.status-bar.alert { background: var(--red-bg); border-color: rgba(248,81,73,0.3); }
+
+.status-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.low .status-icon { background: rgba(63,185,80,0.15); }
+.watch .status-icon { background: rgba(240,136,62,0.15); }
+.alert .status-icon { background: rgba(248,81,73,0.15); animation: shake 0.5s infinite; }
+
+@keyframes shake {
+  0%,100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+.status-content { flex: 1; }
+
+.status-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ai-chip {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: var(--blue-bg);
+  color: var(--blue);
+  border: 1px solid rgba(88,166,255,0.2);
+}
+
+.ai-chip.fallback {
+  background: var(--amber-bg);
+  color: var(--amber);
+  border-color: rgba(240,136,62,0.2);
+}
+
+.status-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+.status-time {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* Section Label */
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 20px 20px 10px;
+}
+
+/* Metrics */
+.metrics-row {
+  display: flex;
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.metric-card {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 12px;
+}
+
+.metric-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.metric-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 5px;
+  line-height: 1.4;
+}
+
+.metric-badge {
+  display: inline-block;
+  font-size: 9px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.badge-ok { background: var(--green-bg); color: var(--green); }
+.badge-warn { background: var(--amber-bg); color: var(--amber); }
+
+/* Scenario Cards */
+.scenarios {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scenario-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-left: 3px solid var(--border);
+  transition: border-color 0.3s;
+}
+
+.scenario-card.low { border-left-color: var(--green); }
+.scenario-card.watch { border-left-color: var(--amber); }
+.scenario-card.alert { border-left-color: var(--red); }
+
+.sc-emoji {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.sc-body { flex: 1; min-width: 0; }
+
+.sc-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sc-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sc-time {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.sc-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sc-status.low { background: var(--green-bg); color: var(--green); }
+.sc-status.watch { background: var(--amber-bg); color: var(--amber); }
+.sc-status.alert { background: var(--red-bg); color: var(--red); }
+.sc-status.none { background: var(--surface); color: var(--text-dim); }
+
+/* Report Button */
+.report-btn {
+  margin: 20px 20px 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.report-btn:hover {
+  border-color: rgba(88,166,255,0.3);
+  background: rgba(88,166,255,0.04);
+}
+
+.report-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--blue-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.report-text { flex: 1; margin-left: 12px; }
+.report-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.report-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.report-arrow { font-size: 20px; color: var(--text-dim); }
+
+/* Settings FAB */
+.settings-fab {
+  position: fixed;
+  bottom: 24px; right: 20px;
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  z-index: 10;
+  color: var(--text-muted);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.settings-fab:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+/* Modal */
+.modal-bg {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+  align-items: flex-end;
+}
+
+.modal-bg.open { display: flex; }
+
+.modal-panel {
+  background: var(--surface);
+  width: 100%;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px 44px;
+  border-top: 1px solid var(--border);
+}
+
+.modal-handle {
+  width: 36px; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+.modal-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.field { margin-bottom: 14px; }
+
+.field label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.field input {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 15px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.field input:focus { border-color: var(--blue); }
+
+.btn-save {
+  width: 100%;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 8px;
+  transition: opacity 0.2s;
+}
+
+.btn-save:hover { opacity: 0.85; }
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--card) 25%, var(--surface) 50%, var(--card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.loading-row {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.loading-card {
+  height: 72px;
+  border-radius: var(--radius);
+}
 </style>
 </head>
 <body>
 
-<div id="risk-bar" class="risk-bar low">
-  <div class="risk-indicator"></div>
-  <div class="risk-text-wrap">
+<div class="header">
+  <div class="header-logo">
+    <div class="logo-dot"></div>
     <div>
-      <span class="risk-level-text" id="risk-label">載入中...</span>
-      <span class="ai-badge" id="ai-badge"></span>
+      <div class="logo-text">小路光</div>
+      <div class="logo-sub">Dlight 居家照護</div>
     </div>
-    <div class="risk-reason" id="risk-reason"></div>
-    <div class="risk-time"   id="risk-time"></div>
+  </div>
+  <div class="header-time" id="header-time">—</div>
+</div>
+
+<div id="status-bar" class="status-bar low">
+  <div class="status-icon">🏠</div>
+  <div class="status-content">
+    <div class="status-title">
+      <span id="status-label">載入中</span>
+      <span class="ai-chip" id="ai-chip" style="display:none"></span>
+    </div>
+    <div class="status-desc" id="status-desc">正在連線...</div>
+    <div class="status-time" id="status-time"></div>
   </div>
 </div>
 
-<div class="section-label">今日數據摘要</div>
-<div class="stat-row">
-  <div class="stat-card">
-    <div class="stat-val"  id="s-motion">—</div>
-    <div class="stat-name">今日移動次數</div>
-    <div class="stat-diff" id="s-motion-diff"></div>
+<div class="section-label">今日數據</div>
+<div class="metrics-row">
+  <div class="metric-card">
+    <div class="metric-val" id="m-motion">—</div>
+    <div class="metric-label">今日移動次數</div>
   </div>
-  <div class="stat-card">
-    <div class="stat-val"  id="s-last">—</div>
-    <div class="stat-name">最後移動</div>
+  <div class="metric-card">
+    <div class="metric-val" id="m-last">—</div>
+    <div class="metric-label">最後移動</div>
   </div>
-  <div class="stat-card">
-    <div class="stat-val"  id="s-wakeup">—</div>
-    <div class="stat-name">起床時間</div>
-    <div class="stat-diff" id="s-wakeup-diff"></div>
+  <div class="metric-card">
+    <div class="metric-val" id="m-wakeup">—</div>
+    <div class="metric-label">起床時間</div>
   </div>
 </div>
 
 <div class="section-label">五大情境監測</div>
-<div class="scenario-list" id="scenario-list">
-  <div class="loading-text">資料載入中...</div>
+<div class="scenarios" id="scenarios">
+  <div class="loading-row">
+    <div class="skeleton loading-card"></div>
+    <div class="skeleton loading-card"></div>
+    <div class="skeleton loading-card"></div>
+  </div>
 </div>
 
 <a class="report-btn" href="report.html">
-  <div>
-    <div class="report-btn-title">📋 昨日健康報告</div>
-    <div class="report-btn-sub" id="report-preview">AI 自動生成的昨日摘要</div>
+  <div class="report-icon">📋</div>
+  <div class="report-text">
+    <div class="report-title">昨日健康報告</div>
+    <div class="report-sub" id="report-sub">AI 自動生成，每日 08:00 更新</div>
   </div>
-  <div class="report-btn-arrow">›</div>
+  <div class="report-arrow">›</div>
 </a>
 
-<div class="settings-fab" onclick="openSettings()">⚙</div>
+<div class="settings-fab" onclick="openSettings()">⚙️</div>
 
 <div class="modal-bg" id="settings-modal">
   <div class="modal-panel">
+    <div class="modal-handle"></div>
     <div class="modal-title">作息基本設定</div>
-    <div class="field"><label>長輩稱呼</label><input type="text"   id="f-name"      value="爸爸"></div>
-    <div class="field"><label>平常起床時間</label><input type="time"   id="f-wakeup"    value="07:50"></div>
-    <div class="field"><label>午休開始時間</label><input type="time"   id="f-nap-start" value="13:00"></div>
-    <div class="field"><label>午休時長（分鐘）</label><input type="number" id="f-nap-dur"   value="90" min="0" max="300"></div>
-    <div class="field"><label>慣常外出 開始</label><input type="time"   id="f-out-start" value="09:00"></div>
-    <div class="field"><label>慣常外出 結束</label><input type="time"   id="f-out-end"   value="11:00"></div>
+    <div class="field"><label>長輩稱呼</label><input type="text" id="f-name" value="爸爸"></div>
+    <div class="field"><label>平常起床時間</label><input type="time" id="f-wakeup" value="07:50"></div>
+    <div class="field"><label>午休開始時間</label><input type="time" id="f-nap-start" value="13:00"></div>
+    <div class="field"><label>午休時長（分鐘）</label><input type="number" id="f-nap-dur" value="90" min="0" max="300"></div>
+    <div class="field"><label>慣常外出 開始</label><input type="time" id="f-out-start" value="09:00"></div>
+    <div class="field"><label>慣常外出 結束</label><input type="time" id="f-out-end" value="11:00"></div>
     <button class="btn-save" onclick="saveSettings()">儲存設定</button>
   </div>
 </div>
@@ -142,16 +532,28 @@ const SB_KEY = DLIGHT_CONFIG.SUPABASE_ANON_KEY;
 const UID = new URLSearchParams(location.search).get('uid') || 1;
 
 const RISK = {
-  low:   { label:'狀態良好', barClass:'low',   badgeClass:'badge-low' },
-  watch: { label:'觀察中',   barClass:'watch', badgeClass:'badge-watch' },
-  alert: { label:'需要關注', barClass:'alert', badgeClass:'badge-alert' }
+  low:   { label:'狀態良好', icon:'🌿', cls:'low' },
+  watch: { label:'需要觀察', icon:'👀', cls:'watch' },
+  alert: { label:'立即關注', icon:'🚨', cls:'alert' }
 };
-const ICONS = {1:'🌙',2:'☀️',3:'🚶',4:'🚪',5:'📋'};
-const NAMES = {1:'夜間起床陪伴',2:'早晨起床確認',3:'日間活動量監測',4:'離開安全區域',5:'每日健康報告'};
+
+const SCENARIOS = {
+  1: { name:'夜間起床陪伴', icon:'🌙' },
+  2: { name:'早晨起床確認', icon:'☀️' },
+  3: { name:'日間活動量監測', icon:'🚶' },
+  4: { name:'離開安全區域', icon:'🚪' },
+  5: { name:'每日健康報告', icon:'📋' }
+};
+
+const STATUS_LABEL = {
+  low: '狀態良好',
+  watch: '需要觀察',
+  alert: '立即關注'
+};
 
 async function sbGet(table, params='') {
   const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
-    headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`}
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
   });
   return r.json();
 }
@@ -162,95 +564,133 @@ function fmtTime(iso) {
   return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
+function timeAgo(iso) {
+  if (!iso) return '';
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return '剛剛更新';
+  if (m < 60) return `${m} 分鐘前更新`;
+  const h = Math.floor(m / 60);
+  return `${h} 小時前更新`;
+}
+
+function updateClock() {
+  const now = new Date();
+  const d = now.toLocaleDateString('zh-TW', { weekday:'short', month:'long', day:'numeric' });
+  const t = fmtTime(now.toISOString());
+  document.getElementById('header-time').innerHTML = `${d}<br><span style="font-size:11px">${t}</span>`;
+}
+
 async function loadAll() {
+  updateClock();
   const today = new Date().toISOString().slice(0,10);
 
-  const decisions = await sbGet('ai_decisions',`user_id=eq.${UID}&order=created_at.desc&limit=1`);
+  // Latest decision
+  const decisions = await sbGet('ai_decisions', `user_id=eq.${UID}&order=created_at.desc&limit=1`);
   const latest = decisions[0];
-  const riskKey = latest?.risk_level || 'low';
-  const riskInfo = RISK[riskKey];
-  const bar = document.getElementById('risk-bar');
-  bar.className = `risk-bar ${riskInfo.barClass}`;
-  document.getElementById('risk-label').textContent = riskInfo.label;
-  document.getElementById('risk-reason').textContent = latest?.ai_reasoning || '目前無異常紀錄';
-  document.getElementById('risk-time').textContent = latest ? `更新於 ${fmtTime(latest.created_at)}` : '';
-  // 顯示 AI 來源 badge
-  const aiBadge = document.getElementById('ai-badge');
-  if (latest?.ai_source === 'claude_fallback') {
-    aiBadge.textContent = 'Claude 備用';
-    aiBadge.style.background = '#FFF5E5';
-    aiBadge.style.color = '#CC5500';
-  } else if (latest?.ai_source) {
-    aiBadge.textContent = 'DeepSeek';
-    aiBadge.style.background = '#E8F4FD';
-    aiBadge.style.color = '#0066CC';
+  const rk = latest?.risk_level || 'low';
+  const ri = RISK[rk];
+
+  const bar = document.getElementById('status-bar');
+  bar.className = `status-bar ${ri.cls}`;
+  document.getElementById('status-bar').querySelector('.status-icon').textContent = ri.icon;
+  document.getElementById('status-label').textContent = ri.label;
+  document.getElementById('status-desc').textContent = latest?.ai_reasoning || '目前無異常紀錄';
+  document.getElementById('status-time').textContent = latest ? timeAgo(latest.created_at) : '';
+
+  const chip = document.getElementById('ai-chip');
+  if (latest?.ai_source) {
+    chip.style.display = 'inline-block';
+    if (latest.ai_source === 'claude_fallback') {
+      chip.textContent = 'Claude 備援';
+      chip.className = 'ai-chip fallback';
+    } else {
+      chip.textContent = 'DeepSeek';
+      chip.className = 'ai-chip';
+    }
   }
 
-  const events = await sbGet('sensor_events',`user_id=eq.${UID}&triggered_at=gte.${today}T00:00:00&order=triggered_at.desc`);
-  document.getElementById('s-motion').textContent = events.length;
-  document.getElementById('s-last').textContent = events[0] ? fmtTime(events[0].triggered_at) : '—';
+  // Sensor events
+  const events = await sbGet('sensor_events',
+    `user_id=eq.${UID}&triggered_at=gte.${today}T00:00:00&order=triggered_at.desc`);
 
-  const wakeupEvent = events.filter(e =>
+  document.getElementById('m-motion').textContent = events.length || '0';
+  document.getElementById('m-last').textContent = events[0] ? fmtTime(events[0].triggered_at) : '—';
+
+  const wakeup = events.filter(e =>
     ['motion_corridor','door_bedroom'].includes(e.device_type) &&
     new Date(e.triggered_at).getHours() >= 5 &&
     new Date(e.triggered_at).getHours() <= 11
   ).pop();
-  document.getElementById('s-wakeup').textContent = wakeupEvent ? fmtTime(wakeupEvent.triggered_at) : '—';
+  document.getElementById('m-wakeup').textContent = wakeup ? fmtTime(wakeup.triggered_at) : '—';
 
-  const allDecisions = await sbGet('ai_decisions',`user_id=eq.${UID}&created_at=gte.${today}T00:00:00&order=created_at.desc`);
-  const latestByScenario = {};
-  allDecisions.forEach(d => { if (!latestByScenario[d.scenario]) latestByScenario[d.scenario] = d; });
+  // All decisions today
+  const allD = await sbGet('ai_decisions',
+    `user_id=eq.${UID}&created_at=gte.${today}T00:00:00&order=created_at.desc`);
+  const byScenario = {};
+  allD.forEach(d => { if (!byScenario[d.scenario]) byScenario[d.scenario] = d; });
 
-  const list = document.getElementById('scenario-list');
-  list.innerHTML = '';
-  [1,2,3,4,5].forEach(i => {
-    const d = latestByScenario[i];
-    const rk = d?.risk_level || 'low';
-    const ri = RISK[rk];
-    list.innerHTML += `
+  const list = document.getElementById('scenarios');
+  list.innerHTML = [1,2,3,4,5].map(i => {
+    const d = byScenario[i];
+    const rk = d?.risk_level || 'none';
+    const rLabel = d ? (STATUS_LABEL[rk] || '正常') : '等待觸發';
+    const sc = SCENARIOS[i];
+    return `
       <div class="scenario-card ${rk}">
-        <div class="sc-icon">${ICONS[i]}</div>
+        <div class="sc-emoji">${sc.icon}</div>
         <div class="sc-body">
-          <div class="sc-name">${NAMES[i]}</div>
+          <div class="sc-name">${sc.name}</div>
           <div class="sc-desc">${d?.ai_reasoning || '等待觸發中'}</div>
-          <div class="sc-time">${d ? `最後更新：${fmtTime(d.created_at)}` : '今日尚無觸發'}</div>
+          <div class="sc-time">${d ? `最後更新 ${fmtTime(d.created_at)}` : '今日尚無觸發'}</div>
         </div>
-        <div class="sc-badge ${ri.badgeClass}">${ri.label}</div>
+        <div class="sc-status ${rk}">${rLabel}</div>
       </div>`;
-  });
+  }).join('');
 
+  // Report
   const yesterday = new Date(Date.now()-864e5).toISOString().slice(0,10);
-  const reports = await sbGet('daily_reports',`user_id=eq.${UID}&report_date=eq.${yesterday}`);
+  const reports = await sbGet('daily_reports', `user_id=eq.${UID}&report_date=eq.${yesterday}`);
   if (reports[0]) {
-    document.getElementById('report-preview').textContent =
-      reports[0].risk_summary === 'normal' ? '昨日狀況正常，點此查看詳情' : '昨日有需要關注的項目，點此查看';
+    document.getElementById('report-sub').textContent =
+      reports[0].risk_summary === 'normal' ? '昨日一切正常，點擊查看詳情' : '昨日有需關注項目，點擊查看';
   }
 }
 
-function openSettings() { document.getElementById('settings-modal').classList.add('open'); }
-document.getElementById('settings-modal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
+function openSettings() {
+  document.getElementById('settings-modal').classList.add('open');
+}
+
+document.getElementById('settings-modal').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
 
 async function saveSettings() {
   await fetch(`${SB_URL}/rest/v1/user_settings`, {
-    method:'POST',
-    headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},
-    body:JSON.stringify({
-      user_id:parseInt(UID),
-      elder_name:document.getElementById('f-name').value,
-      wakeup_time:document.getElementById('f-wakeup').value,
-      nap_start:document.getElementById('f-nap-start').value,
-      nap_duration_min:parseInt(document.getElementById('f-nap-dur').value),
-      outing_start:document.getElementById('f-out-start').value,
-      outing_end:document.getElementById('f-out-end').value,
-      updated_at:new Date().toISOString()
+    method: 'POST',
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': `Bearer ${SB_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'resolution=merge-duplicates'
+    },
+    body: JSON.stringify({
+      user_id: parseInt(UID),
+      elder_name: document.getElementById('f-name').value,
+      wakeup_time: document.getElementById('f-wakeup').value,
+      nap_start: document.getElementById('f-nap-start').value,
+      nap_duration_min: parseInt(document.getElementById('f-nap-dur').value),
+      outing_start: document.getElementById('f-out-start').value,
+      outing_end: document.getElementById('f-out-end').value,
+      updated_at: new Date().toISOString()
     })
   });
   document.getElementById('settings-modal').classList.remove('open');
-  alert('設定已儲存，AI 將以此為初始基準');
 }
 
 loadAll();
 setInterval(loadAll, DLIGHT_CONFIG.REFRESH_INTERVAL_MS);
+setInterval(updateClock, 10000);
 </script>
 </body>
 </html>
