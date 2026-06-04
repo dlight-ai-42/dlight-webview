@@ -5,524 +5,571 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>小路光 Dlight</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="config.js"></script>
 <style>
 :root {
-  --bg: #0D1117;
-  --surface: #161B22;
-  --card: #1C2128;
-  --border: rgba(255,255,255,0.06);
-  --text: #E6EDF3;
-  --text-muted: #7D8590;
-  --text-dim: #484F58;
-  --green: #3FB950;
-  --green-bg: rgba(63,185,80,0.1);
-  --amber: #F0883E;
-  --amber-bg: rgba(240,136,62,0.1);
-  --red: #F85149;
-  --red-bg: rgba(248,81,73,0.1);
-  --blue: #58A6FF;
-  --blue-bg: rgba(88,166,255,0.08);
-  --radius: 12px;
+  --bg: #F2F2F7;
+  --surface: #FFFFFF;
+  --card: #FFFFFF;
+  --grouped: #F2F2F7;
+  --separator: rgba(60,60,67,0.12);
+  --text-primary: #1C1C1E;
+  --text-secondary: #636366;
+  --text-tertiary: #AEAEB2;
+  --blue: #007AFF;
+  --green: #34C759;
+  --orange: #FF9500;
+  --red: #FF3B30;
+  --green-bg: #E8F8EC;
+  --orange-bg: #FFF5E5;
+  --red-bg: #FDECEA;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
 }
 
-* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 body {
-  font-family:'DM Sans', sans-serif;
+  font-family: -apple-system, 'Inter', 'Noto Sans TC', sans-serif;
   background: var(--bg);
-  color: var(--text);
+  color: var(--text-primary);
   min-height: 100vh;
-  padding-bottom: 80px;
+  padding-bottom: 100px;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Header */
-.header {
-  padding: 20px 20px 0;
+/* Top Status Area */
+.top-area {
+  background: var(--surface);
+  padding: 16px 20px 20px;
+  border-bottom: 1px solid var(--separator);
+}
+
+.top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 16px;
 }
 
-.header-logo {
+.app-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.live-badge {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--green);
+  background: var(--green-bg);
+  padding: 3px 8px 3px 6px;
+  border-radius: 20px;
 }
 
-.logo-dot {
-  width: 8px; height: 8px;
+.live-dot {
+  width: 6px; height: 6px;
   background: var(--green);
   border-radius: 50%;
-  animation: pulse-dot 2s infinite;
+  animation: pulse 2s infinite;
 }
 
-@keyframes pulse-dot {
-  0%,100% { opacity:1; transform:scale(1); }
-  50% { opacity:0.5; transform:scale(1.4); }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
-.logo-text {
-  font-family: 'DM Serif Display', serif;
-  font-size: 20px;
-  letter-spacing: -0.3px;
-  color: var(--text);
-}
-
-.logo-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 1px;
-}
-
-.header-time {
-  font-size: 12px;
-  color: var(--text-muted);
-  text-align: right;
-}
-
-/* Status Bar */
-.status-bar {
-  margin: 16px 20px 0;
-  border-radius: var(--radius);
-  padding: 16px 18px;
+/* Main Status Card */
+.status-hero {
   display: flex;
   align-items: center;
   gap: 14px;
-  border: 1px solid var(--border);
-  transition: all 0.4s ease;
-  position: relative;
-  overflow: hidden;
 }
 
-.status-bar::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.05;
-}
-
-.status-bar.low { background: var(--green-bg); border-color: rgba(63,185,80,0.2); }
-.status-bar.watch { background: var(--amber-bg); border-color: rgba(240,136,62,0.2); }
-.status-bar.alert { background: var(--red-bg); border-color: rgba(248,81,73,0.3); }
-
-.status-icon {
-  width: 36px; height: 36px;
-  border-radius: 10px;
+.status-circle {
+  width: 52px; height: 52px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 26px;
   flex-shrink: 0;
+  transition: background 0.3s;
 }
 
-.low .status-icon { background: rgba(63,185,80,0.15); }
-.watch .status-icon { background: rgba(240,136,62,0.15); }
-.alert .status-icon { background: rgba(248,81,73,0.15); animation: shake 0.5s infinite; }
+.status-circle.low { background: var(--green-bg); }
+.status-circle.watch { background: var(--orange-bg); }
+.status-circle.alert { background: var(--red-bg); animation: shake 0.6s infinite; }
 
 @keyframes shake {
-  0%,100% { transform: rotate(0deg); }
-  25% { transform: rotate(-5deg); }
-  75% { transform: rotate(5deg); }
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
 }
 
-.status-content { flex: 1; }
+.status-info { flex: 1; }
 
 .status-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  transition: color 0.3s;
 }
 
-.ai-chip {
-  font-size: 10px;
-  font-weight: 500;
-  padding: 2px 7px;
-  border-radius: 20px;
-  background: var(--blue-bg);
-  color: var(--blue);
-  border: 1px solid rgba(88,166,255,0.2);
-}
+.status-title.low { color: #1D8348; }
+.status-title.watch { color: #B7611A; }
+.status-title.alert { color: #C0392B; }
 
-.ai-chip.fallback {
-  background: var(--amber-bg);
-  color: var(--amber);
-  border-color: rgba(240,136,62,0.2);
-}
-
-.status-desc {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 3px;
-  line-height: 1.5;
-}
-
-.status-time {
-  font-size: 10px;
-  color: var(--text-dim);
-  margin-top: 4px;
-}
-
-/* Section Label */
-.section-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  padding: 20px 20px 10px;
-}
-
-/* Metrics */
-.metrics-row {
-  display: flex;
-  gap: 10px;
-  padding: 0 20px;
-}
-
-.metric-card {
-  flex: 1;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 12px;
-}
-
-.metric-val {
-  font-family: 'DM Serif Display', serif;
-  font-size: 26px;
-  color: var(--text);
-  letter-spacing: -0.5px;
-  line-height: 1;
-}
-
-.metric-label {
-  font-size: 10px;
-  color: var(--text-muted);
-  margin-top: 5px;
+.status-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
   line-height: 1.4;
 }
 
-.metric-badge {
-  display: inline-block;
-  font-size: 9px;
-  padding: 2px 5px;
-  border-radius: 4px;
-  margin-top: 4px;
-  font-weight: 500;
-}
-
-.badge-ok { background: var(--green-bg); color: var(--green); }
-.badge-warn { background: var(--amber-bg); color: var(--amber); }
-
-/* Scenario Cards */
-.scenarios {
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.scenario-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  border-left: 3px solid var(--border);
-  transition: border-color 0.3s;
-}
-
-.scenario-card.low { border-left-color: var(--green); }
-.scenario-card.watch { border-left-color: var(--amber); }
-.scenario-card.alert { border-left-color: var(--red); }
-
-.sc-emoji {
-  width: 34px; height: 34px;
-  border-radius: 9px;
-  background: var(--surface);
+.status-meta {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
+  gap: 6px;
+  margin-top: 6px;
 }
 
-.sc-body { flex: 1; min-width: 0; }
+.ai-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.2px;
+}
 
-.sc-name {
+.ai-tag.deepseek { background: #E3F0FF; color: var(--blue); }
+.ai-tag.claude { background: var(--orange-bg); color: var(--orange); }
+
+.time-tag {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* Section */
+.section {
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.section-title {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  padding-left: 4px;
 }
 
-.sc-desc {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 3px;
-  line-height: 1.5;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Stats Row */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
 }
 
-.sc-time {
-  font-size: 10px;
-  color: var(--text-dim);
-  margin-top: 4px;
+.stat-card {
+  background: var(--card);
+  border-radius: var(--radius-md);
+  padding: 14px 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.04);
 }
 
-.sc-status {
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-label {
   font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 20px;
-  white-space: nowrap;
-  flex-shrink: 0;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  line-height: 1.4;
 }
 
-.sc-status.low { background: var(--green-bg); color: var(--green); }
-.sc-status.watch { background: var(--amber-bg); color: var(--amber); }
-.sc-status.alert { background: var(--red-bg); color: var(--red); }
-.sc-status.none { background: var(--surface); color: var(--text-dim); }
-
-/* Report Button */
-.report-btn {
-  margin: 20px 20px 0;
+/* Scenario List */
+.scenario-group {
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 18px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.04);
+}
+
+.scenario-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  text-decoration: none;
-  transition: border-color 0.2s, background 0.2s;
+  padding: 13px 16px;
+  gap: 12px;
+  border-bottom: 1px solid var(--separator);
+  transition: background 0.15s;
 }
 
-.report-btn:hover {
-  border-color: rgba(88,166,255,0.3);
-  background: rgba(88,166,255,0.04);
-}
+.scenario-row:last-child { border-bottom: none; }
+.scenario-row:active { background: var(--bg); }
 
-.report-icon {
+.sc-icon-wrap {
   width: 36px; height: 36px;
-  border-radius: 10px;
-  background: var(--blue-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
-
-.report-text { flex: 1; margin-left: 12px; }
-.report-title { font-size: 14px; font-weight: 600; color: var(--text); }
-.report-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-.report-arrow { font-size: 20px; color: var(--text-dim); }
-
-/* Settings FAB */
-.settings-fab {
-  position: fixed;
-  bottom: 24px; right: 20px;
-  width: 48px; height: 48px;
-  border-radius: 14px;
-  background: var(--card);
-  border: 1px solid var(--border);
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
-  cursor: pointer;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  z-index: 10;
-  color: var(--text-muted);
-  transition: color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
 }
 
-.settings-fab:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+.sc-icon-wrap.low { background: var(--green-bg); }
+.sc-icon-wrap.watch { background: var(--orange-bg); }
+.sc-icon-wrap.alert { background: var(--red-bg); }
+.sc-icon-wrap.none { background: var(--bg); }
+
+.sc-content { flex: 1; min-width: 0; }
+
+.sc-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.sc-detail {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.sc-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.sc-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+.sc-badge.low { background: var(--green-bg); color: #1D8348; }
+.sc-badge.watch { background: var(--orange-bg); color: #B7611A; }
+.sc-badge.alert { background: var(--red-bg); color: #C0392B; }
+.sc-badge.none { background: var(--bg); color: var(--text-tertiary); }
+
+.sc-time {
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+
+.sc-chevron {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  margin-left: 4px;
+}
+
+/* Report Card */
+.report-card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.04);
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+.report-inner {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  gap: 12px;
+}
+
+.report-icon-wrap {
+  width: 44px; height: 44px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.report-texts { flex: 1; }
+.report-title-text { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.report-sub-text { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+.report-chevron { font-size: 18px; color: var(--text-tertiary); }
+
+/* Settings Button */
+.settings-row {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.04);
+}
+
+.settings-btn {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  gap: 12px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.settings-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.settings-label { font-size: 15px; font-weight: 500; color: var(--text-primary); flex: 1; }
 
 /* Modal */
-.modal-bg {
+.modal-overlay {
   display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(4px);
-  z-index: 50;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 100;
   align-items: flex-end;
 }
 
-.modal-bg.open { display: flex; }
+.modal-overlay.open { display: flex; }
 
-.modal-panel {
-  background: var(--surface);
+.modal-sheet {
+  background: var(--bg);
   width: 100%;
-  border-radius: 20px 20px 0 0;
-  padding: 24px 20px 44px;
-  border-top: 1px solid var(--border);
+  border-radius: 16px 16px 0 0;
+  padding-bottom: 40px;
+  max-height: 85vh;
+  overflow-y: auto;
 }
 
-.modal-handle {
-  width: 36px; height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  margin: 0 auto 20px;
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 12px;
 }
 
-.modal-title {
-  font-size: 17px;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
+.modal-title { font-size: 17px; font-weight: 700; }
 
-.field { margin-bottom: 14px; }
-
-.field label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  display: block;
-  margin-bottom: 6px;
-}
-
-.field input {
-  width: 100%;
-  padding: 11px 14px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+.modal-close {
   font-size: 15px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  outline: none;
-  transition: border-color 0.2s;
+  color: var(--blue);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-family: inherit;
 }
 
-.field input:focus { border-color: var(--blue); }
+.modal-section {
+  margin: 0 20px 12px;
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
 
-.btn-save {
-  width: 100%;
+.modal-field {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--separator);
+  gap: 12px;
+}
+
+.modal-field:last-child { border-bottom: none; }
+
+.field-label {
+  font-size: 15px;
+  color: var(--text-primary);
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.field-input {
+  flex: 1;
+  font-size: 15px;
+  color: var(--text-secondary);
+  border: none;
+  outline: none;
+  background: none;
+  text-align: right;
+  font-family: inherit;
+}
+
+.save-btn {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 8px 20px 0;
   background: var(--blue);
   color: #fff;
   border: none;
+  border-radius: var(--radius-md);
   padding: 14px;
-  border-radius: 12px;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  margin-top: 8px;
-  transition: opacity 0.2s;
+  font-family: inherit;
 }
 
-.btn-save:hover { opacity: 0.85; }
-
-/* Loading skeleton */
+/* Loading */
 .skeleton {
-  background: linear-gradient(90deg, var(--card) 25%, var(--surface) 50%, var(--card) 75%);
+  background: linear-gradient(90deg, #E5E5EA 25%, #F2F2F7 50%, #E5E5EA 75%);
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: 6px;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
 }
 
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
-
-.loading-row {
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.loading-card {
-  height: 72px;
-  border-radius: var(--radius);
-}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-logo">
-    <div class="logo-dot"></div>
-    <div>
-      <div class="logo-text">小路光</div>
-      <div class="logo-sub">Dlight 居家照護</div>
+<!-- Top Area -->
+<div class="top-area">
+  <div class="top-row">
+    <div class="app-name">小路光 Dlight</div>
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      即時監測中
     </div>
   </div>
-  <div class="header-time" id="header-time">—</div>
-</div>
 
-<div id="status-bar" class="status-bar low">
-  <div class="status-icon">🏠</div>
-  <div class="status-content">
-    <div class="status-title">
-      <span id="status-label">載入中</span>
-      <span class="ai-chip" id="ai-chip" style="display:none"></span>
+  <div class="status-hero">
+    <div class="status-circle low" id="status-circle">🌿</div>
+    <div class="status-info">
+      <div class="status-title low" id="status-title">載入中</div>
+      <div class="status-subtitle" id="status-subtitle">正在連線...</div>
+      <div class="status-meta">
+        <span class="ai-tag deepseek" id="ai-tag" style="display:none"></span>
+        <span class="time-tag" id="status-time"></span>
+      </div>
     </div>
-    <div class="status-desc" id="status-desc">正在連線...</div>
-    <div class="status-time" id="status-time"></div>
   </div>
 </div>
 
-<div class="section-label">今日數據</div>
-<div class="metrics-row">
-  <div class="metric-card">
-    <div class="metric-val" id="m-motion">—</div>
-    <div class="metric-label">今日移動次數</div>
-  </div>
-  <div class="metric-card">
-    <div class="metric-val" id="m-last">—</div>
-    <div class="metric-label">最後移動</div>
-  </div>
-  <div class="metric-card">
-    <div class="metric-val" id="m-wakeup">—</div>
-    <div class="metric-label">起床時間</div>
-  </div>
-</div>
-
-<div class="section-label">五大情境監測</div>
-<div class="scenarios" id="scenarios">
-  <div class="loading-row">
-    <div class="skeleton loading-card"></div>
-    <div class="skeleton loading-card"></div>
-    <div class="skeleton loading-card"></div>
+<!-- Stats -->
+<div class="section">
+  <div class="section-title">今日數據</div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number" id="s-motion">—</div>
+      <div class="stat-label">移動次數</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="s-last">—</div>
+      <div class="stat-label">最後移動</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="s-wakeup">—</div>
+      <div class="stat-label">起床時間</div>
+    </div>
   </div>
 </div>
 
-<a class="report-btn" href="report.html">
-  <div class="report-icon">📋</div>
-  <div class="report-text">
-    <div class="report-title">昨日健康報告</div>
-    <div class="report-sub" id="report-sub">AI 自動生成，每日 08:00 更新</div>
+<!-- Scenarios -->
+<div class="section">
+  <div class="section-title">五大情境監測</div>
+  <div class="scenario-group" id="scenario-group">
+    <div style="padding:24px;text-align:center;color:#AEAEB2;font-size:13px">載入中...</div>
   </div>
-  <div class="report-arrow">›</div>
-</a>
+</div>
 
-<div class="settings-fab" onclick="openSettings()">⚙️</div>
+<!-- Report -->
+<div class="section">
+  <div class="section-title">健康報告</div>
+  <a class="report-card" href="report.html">
+    <div class="report-inner">
+      <div class="report-icon-wrap">📋</div>
+      <div class="report-texts">
+        <div class="report-title-text">昨日健康報告</div>
+        <div class="report-sub-text" id="report-sub">AI 自動生成，每日 08:00 更新</div>
+      </div>
+      <div class="report-chevron">›</div>
+    </div>
+  </a>
+</div>
 
-<div class="modal-bg" id="settings-modal">
-  <div class="modal-panel">
-    <div class="modal-handle"></div>
-    <div class="modal-title">作息基本設定</div>
-    <div class="field"><label>長輩稱呼</label><input type="text" id="f-name" value="爸爸"></div>
-    <div class="field"><label>平常起床時間</label><input type="time" id="f-wakeup" value="07:50"></div>
-    <div class="field"><label>午休開始時間</label><input type="time" id="f-nap-start" value="13:00"></div>
-    <div class="field"><label>午休時長（分鐘）</label><input type="number" id="f-nap-dur" value="90" min="0" max="300"></div>
-    <div class="field"><label>慣常外出 開始</label><input type="time" id="f-out-start" value="09:00"></div>
-    <div class="field"><label>慣常外出 結束</label><input type="time" id="f-out-end" value="11:00"></div>
-    <button class="btn-save" onclick="saveSettings()">儲存設定</button>
+<!-- Settings -->
+<div class="section">
+  <div class="settings-row">
+    <button class="settings-btn" onclick="openSettings()">
+      <div class="settings-icon">⚙️</div>
+      <div class="settings-label">作息基本設定</div>
+      <div class="report-chevron">›</div>
+    </button>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <div class="modal-title">作息基本設定</div>
+      <button class="modal-close" onclick="closeSettings()">完成</button>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-field">
+        <div class="field-label">長輩稱呼</div>
+        <input class="field-input" type="text" id="f-name" value="爸爸" placeholder="爸爸">
+      </div>
+      <div class="modal-field">
+        <div class="field-label">平常起床</div>
+        <input class="field-input" type="time" id="f-wakeup" value="07:50">
+      </div>
+      <div class="modal-field">
+        <div class="field-label">午休開始</div>
+        <input class="field-input" type="time" id="f-nap-start" value="13:00">
+      </div>
+      <div class="modal-field">
+        <div class="field-label">午休時長</div>
+        <input class="field-input" type="number" id="f-nap-dur" value="90" placeholder="分鐘">
+      </div>
+      <div class="modal-field">
+        <div class="field-label">外出開始</div>
+        <input class="field-input" type="time" id="f-out-start" value="09:00">
+      </div>
+      <div class="modal-field">
+        <div class="field-label">外出結束</div>
+        <input class="field-input" type="time" id="f-out-end" value="11:00">
+      </div>
+    </div>
+
+    <button class="save-btn" onclick="saveSettings()">儲存設定</button>
   </div>
 </div>
 
@@ -531,31 +578,25 @@ const SB_URL = DLIGHT_CONFIG.SUPABASE_URL;
 const SB_KEY = DLIGHT_CONFIG.SUPABASE_ANON_KEY;
 const UID = new URLSearchParams(location.search).get('uid') || 1;
 
-const RISK = {
-  low:   { label:'狀態良好', icon:'🌿', cls:'low' },
-  watch: { label:'需要觀察', icon:'👀', cls:'watch' },
-  alert: { label:'立即關注', icon:'🚨', cls:'alert' }
+const RISK_CONFIG = {
+  low:   { icon: '🌿', titleClass: 'low',   circleClass: 'low',   label: '狀態良好' },
+  watch: { icon: '👁️',  titleClass: 'watch', circleClass: 'watch', label: '需要觀察' },
+  alert: { icon: '🚨', titleClass: 'alert', circleClass: 'alert', label: '立即關注' }
 };
 
 const SCENARIOS = {
-  1: { name:'夜間起床陪伴', icon:'🌙' },
-  2: { name:'早晨起床確認', icon:'☀️' },
-  3: { name:'日間活動量監測', icon:'🚶' },
-  4: { name:'離開安全區域', icon:'🚪' },
-  5: { name:'每日健康報告', icon:'📋' }
+  1: { name: '夜間起床陪伴', icon: '🌙' },
+  2: { name: '早晨起床確認', icon: '☀️' },
+  3: { name: '日間活動量監測', icon: '🚶' },
+  4: { name: '離開安全區域', icon: '🚪' },
+  5: { name: '每日健康報告', icon: '📋' }
 };
 
-const STATUS_LABEL = {
-  low: '狀態良好',
-  watch: '需要觀察',
-  alert: '立即關注'
-};
-
-async function sbGet(table, params='') {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
+async function sbGet(table, params = '') {
+  const res = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
     headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
   });
-  return r.json();
+  return res.json();
 }
 
 function fmtTime(iso) {
@@ -566,94 +607,82 @@ function fmtTime(iso) {
 
 function timeAgo(iso) {
   if (!iso) return '';
-  const diff = Date.now() - new Date(iso).getTime();
-  const m = Math.floor(diff / 60000);
-  if (m < 1) return '剛剛更新';
-  if (m < 60) return `${m} 分鐘前更新`;
-  const h = Math.floor(m / 60);
-  return `${h} 小時前更新`;
-}
-
-function updateClock() {
-  const now = new Date();
-  const d = now.toLocaleDateString('zh-TW', { weekday:'short', month:'long', day:'numeric' });
-  const t = fmtTime(now.toISOString());
-  document.getElementById('header-time').innerHTML = `${d}<br><span style="font-size:11px">${t}</span>`;
+  const m = Math.floor((Date.now() - new Date(iso)) / 60000);
+  if (m < 1) return '剛剛';
+  if (m < 60) return `${m} 分鐘前`;
+  return `${Math.floor(m/60)} 小時前`;
 }
 
 async function loadAll() {
-  updateClock();
-  const today = new Date().toISOString().slice(0,10);
+  const today = new Date().toISOString().slice(0, 10);
 
   // Latest decision
   const decisions = await sbGet('ai_decisions', `user_id=eq.${UID}&order=created_at.desc&limit=1`);
   const latest = decisions[0];
   const rk = latest?.risk_level || 'low';
-  const ri = RISK[rk];
+  const rc = RISK_CONFIG[rk];
 
-  const bar = document.getElementById('status-bar');
-  bar.className = `status-bar ${ri.cls}`;
-  document.getElementById('status-bar').querySelector('.status-icon').textContent = ri.icon;
-  document.getElementById('status-label').textContent = ri.label;
-  document.getElementById('status-desc').textContent = latest?.ai_reasoning || '目前無異常紀錄';
+  const circle = document.getElementById('status-circle');
+  const title = document.getElementById('status-title');
+  circle.className = `status-circle ${rc.circleClass}`;
+  circle.textContent = rc.icon;
+  title.className = `status-title ${rc.titleClass}`;
+  title.textContent = rc.label;
+  document.getElementById('status-subtitle').textContent = latest?.ai_reasoning || '目前無異常紀錄';
   document.getElementById('status-time').textContent = latest ? timeAgo(latest.created_at) : '';
 
-  const chip = document.getElementById('ai-chip');
+  const tag = document.getElementById('ai-tag');
   if (latest?.ai_source) {
-    chip.style.display = 'inline-block';
-    if (latest.ai_source === 'claude_fallback') {
-      chip.textContent = 'Claude 備援';
-      chip.className = 'ai-chip fallback';
-    } else {
-      chip.textContent = 'DeepSeek';
-      chip.className = 'ai-chip';
-    }
+    tag.style.display = 'inline-block';
+    tag.className = `ai-tag ${latest.ai_source === 'claude_fallback' ? 'claude' : 'deepseek'}`;
+    tag.textContent = latest.ai_source === 'claude_fallback' ? 'Claude' : 'DeepSeek';
   }
 
-  // Sensor events
-  const events = await sbGet('sensor_events',
-    `user_id=eq.${UID}&triggered_at=gte.${today}T00:00:00&order=triggered_at.desc`);
-
-  document.getElementById('m-motion').textContent = events.length || '0';
-  document.getElementById('m-last').textContent = events[0] ? fmtTime(events[0].triggered_at) : '—';
+  // Events
+  const events = await sbGet('sensor_events', `user_id=eq.${UID}&triggered_at=gte.${today}T00:00:00&order=triggered_at.desc`);
+  document.getElementById('s-motion').textContent = events.length || '0';
+  document.getElementById('s-last').textContent = events[0] ? fmtTime(events[0].triggered_at) : '—';
 
   const wakeup = events.filter(e =>
     ['motion_corridor','door_bedroom'].includes(e.device_type) &&
     new Date(e.triggered_at).getHours() >= 5 &&
     new Date(e.triggered_at).getHours() <= 11
   ).pop();
-  document.getElementById('m-wakeup').textContent = wakeup ? fmtTime(wakeup.triggered_at) : '—';
+  document.getElementById('s-wakeup').textContent = wakeup ? fmtTime(wakeup.triggered_at) : '—';
 
   // All decisions today
-  const allD = await sbGet('ai_decisions',
-    `user_id=eq.${UID}&created_at=gte.${today}T00:00:00&order=created_at.desc`);
+  const allD = await sbGet('ai_decisions', `user_id=eq.${UID}&created_at=gte.${today}T00:00:00&order=created_at.desc`);
   const byScenario = {};
   allD.forEach(d => { if (!byScenario[d.scenario]) byScenario[d.scenario] = d; });
 
-  const list = document.getElementById('scenarios');
-  list.innerHTML = [1,2,3,4,5].map(i => {
+  const group = document.getElementById('scenario-group');
+  group.innerHTML = [1,2,3,4,5].map((i, idx) => {
     const d = byScenario[i];
     const rk = d?.risk_level || 'none';
-    const rLabel = d ? (STATUS_LABEL[rk] || '正常') : '等待觸發';
     const sc = SCENARIOS[i];
+    const label = d ? ({ low:'良好', watch:'觀察中', alert:'需關注' }[rk] || '良好') : '待觸發';
+    const isLast = idx === 4;
     return `
-      <div class="scenario-card ${rk}">
-        <div class="sc-emoji">${sc.icon}</div>
-        <div class="sc-body">
+      <div class="scenario-row" style="${isLast ? '' : ''}">
+        <div class="sc-icon-wrap ${rk}">${sc.icon}</div>
+        <div class="sc-content">
           <div class="sc-name">${sc.name}</div>
-          <div class="sc-desc">${d?.ai_reasoning || '等待觸發中'}</div>
-          <div class="sc-time">${d ? `最後更新 ${fmtTime(d.created_at)}` : '今日尚無觸發'}</div>
+          <div class="sc-detail">${d?.ai_reasoning || '等待感測器觸發'}</div>
         </div>
-        <div class="sc-status ${rk}">${rLabel}</div>
+        <div class="sc-right">
+          <div class="sc-badge ${rk}">${label}</div>
+          <div class="sc-time">${d ? fmtTime(d.created_at) : '今日尚無'}</div>
+        </div>
+        <div class="sc-chevron">›</div>
       </div>`;
   }).join('');
 
   // Report
-  const yesterday = new Date(Date.now()-864e5).toISOString().slice(0,10);
+  const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
   const reports = await sbGet('daily_reports', `user_id=eq.${UID}&report_date=eq.${yesterday}`);
   if (reports[0]) {
     document.getElementById('report-sub').textContent =
-      reports[0].risk_summary === 'normal' ? '昨日一切正常，點擊查看詳情' : '昨日有需關注項目，點擊查看';
+      reports[0].risk_summary === 'normal' ? '昨日一切正常，點此查看' : '昨日有需關注項目，點此查看';
   }
 }
 
@@ -661,18 +690,20 @@ function openSettings() {
   document.getElementById('settings-modal').classList.add('open');
 }
 
+function closeSettings() {
+  document.getElementById('settings-modal').classList.remove('open');
+}
+
 document.getElementById('settings-modal').addEventListener('click', function(e) {
-  if (e.target === this) this.classList.remove('open');
+  if (e.target === this) closeSettings();
 });
 
 async function saveSettings() {
   await fetch(`${SB_URL}/rest/v1/user_settings`, {
     method: 'POST',
     headers: {
-      'apikey': SB_KEY,
-      'Authorization': `Bearer ${SB_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'resolution=merge-duplicates'
+      'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`,
+      'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates'
     },
     body: JSON.stringify({
       user_id: parseInt(UID),
@@ -685,12 +716,11 @@ async function saveSettings() {
       updated_at: new Date().toISOString()
     })
   });
-  document.getElementById('settings-modal').classList.remove('open');
+  closeSettings();
 }
 
 loadAll();
 setInterval(loadAll, DLIGHT_CONFIG.REFRESH_INTERVAL_MS);
-setInterval(updateClock, 10000);
 </script>
 </body>
 </html>
