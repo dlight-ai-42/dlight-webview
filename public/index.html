@@ -5,724 +5,811 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>小路光 Dlight</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="config.js"></script>
 <style>
 :root {
-  --bg: #F2F2F7;
-  --surface: #FFFFFF;
-  --card: #FFFFFF;
-  --grouped: #F2F2F7;
-  --separator: rgba(60,60,67,0.12);
-  --text-primary: #1C1C1E;
-  --text-secondary: #636366;
-  --text-tertiary: #AEAEB2;
-  --blue: #007AFF;
-  --green: #34C759;
-  --orange: #FF9500;
-  --red: #FF3B30;
-  --green-bg: #E8F8EC;
-  --orange-bg: #FFF5E5;
-  --red-bg: #FDECEA;
-  --radius-lg: 16px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
+  --bg:        #F0F2F5;
+  --white:     #FFFFFF;
+  --ink1:      #0F1621;
+  --ink2:      #4A5568;
+  --ink3:      #9AA5B4;
+  --ink4:      #CBD5E0;
+  --border:    rgba(0,0,0,0.07);
+
+  --good:      #00B894;
+  --good-lt:   #E6FAF6;
+  --warn:      #F6A623;
+  --warn-lt:   #FEF6E6;
+  --danger:    #E53E3E;
+  --danger-lt: #FDE8E8;
+
+  --purple:    #6C63FF;
+  --purple-lt: #EFEDFF;
+
+  --card-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 0 1px rgba(0,0,0,0.06);
+  --card-shadow-lg: 0 8px 32px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
+
+  --r:    22px;
+  --r-md: 16px;
+  --r-sm: 12px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 
 body {
-  font-family: -apple-system, 'Inter', 'Noto Sans TC', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
   background: var(--bg);
-  color: var(--text-primary);
+  color: var(--ink1);
   min-height: 100vh;
   padding-bottom: 100px;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Top Status Area */
-.top-area {
-  background: var(--surface);
-  padding: 16px 20px 20px;
-  border-bottom: 1px solid var(--separator);
+/* ── SVG ICONS ── */
+.icon { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+.icon svg { display:block; }
+
+/* ── NAVBAR ── */
+.navbar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 54px 24px 0;
+}
+.brand { display:flex; align-items:center; gap:10px; }
+.brand-mark {
+  width:38px; height:38px; border-radius:12px;
+  background: linear-gradient(145deg, #7B74FF 0%, #4F46E5 100%);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 4px 12px rgba(108,99,255,0.35);
+}
+.brand-name { font-size:17px; font-weight:800; letter-spacing:-0.5px; }
+.brand-sub  { font-size:10px; color:var(--ink3); font-weight:400; margin-top:-1px; letter-spacing:0.3px; }
+
+.live-chip {
+  display:flex; align-items:center; gap:5px;
+  background:var(--white); border:1px solid var(--border);
+  border-radius:20px; padding:5px 11px;
+  font-size:11px; font-weight:600; color:var(--good);
+  box-shadow: var(--card-shadow);
+}
+.live-chip-dot {
+  width:5px; height:5px; border-radius:50%; background:var(--good);
+  animation: lp 2.5s ease-in-out infinite;
+}
+@keyframes lp { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* ── HERO ── */
+.hero {
+  margin: 18px 20px 0;
+  background: var(--white);
+  border-radius: var(--r);
+  box-shadow: var(--card-shadow-lg);
+  overflow: hidden;
+  position: relative;
+}
+.hero-gradient {
+  position:absolute; inset:0; pointer-events:none;
+  opacity: 0.5;
+  transition: background 0.5s;
+}
+.hero-gradient.low    { background: radial-gradient(ellipse at top right, rgba(0,184,148,0.15), transparent 65%); }
+.hero-gradient.watch  { background: radial-gradient(ellipse at top right, rgba(246,166,35,0.15), transparent 65%); }
+.hero-gradient.alert  { background: radial-gradient(ellipse at top right, rgba(229,62,62,0.18), transparent 65%); }
+
+.hero-inner { padding: 26px 26px 22px; position:relative; }
+
+.hero-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:5px 13px; border-radius:20px;
+  font-size:11px; font-weight:700; letter-spacing:0.5px;
+  text-transform:uppercase; margin-bottom:18px;
+  transition: all 0.4s;
+}
+.hero-badge.low    { background:var(--good-lt);   color:var(--good);   }
+.hero-badge.watch  { background:var(--warn-lt);   color:var(--warn);   }
+.hero-badge.alert  { background:var(--danger-lt); color:var(--danger); }
+.badge-dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+
+.hero-big-title {
+  font-size:36px; font-weight:800; letter-spacing:-1.2px;
+  line-height:1.1; color:var(--ink1); margin-bottom:10px;
+}
+.hero-reason {
+  font-size:14px; color:var(--ink2); line-height:1.65; font-weight:400;
+  margin-bottom:20px;
 }
 
-.top-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
+.hero-divider { height:1px; background:var(--border); margin: 0 -26px 16px; }
+
+.hero-meta { display:flex; align-items:center; gap:10px; }
+.ai-badge {
+  font-size:10px; font-weight:700; padding:3px 9px; border-radius:6px;
+  letter-spacing:0.4px; text-transform:uppercase;
 }
+.ai-badge.ds { background:#EBF5FF; color:#2B6CB0; }
+.ai-badge.cl { background:var(--warn-lt); color:#B7651A; }
+.hero-ts { font-size:11px; color:var(--ink3); font-weight:400; }
 
-.app-name {
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: -0.3px;
+/* ── STATS ── */
+.stats {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+  margin: 12px 20px 0;
 }
-
-.live-badge {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--green);
-  background: var(--green-bg);
-  padding: 3px 8px 3px 6px;
-  border-radius: 20px;
+.stat-tile {
+  background:var(--white); border-radius:var(--r-md);
+  box-shadow: var(--card-shadow);
+  padding: 16px 14px 14px;
+  position:relative; overflow:hidden;
 }
-
-.live-dot {
-  width: 6px; height: 6px;
-  background: var(--green);
-  border-radius: 50%;
-  animation: pulse 2s infinite;
+.stat-tile-bar {
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--purple), rgba(108,99,255,0.1));
+  transition: background 0.4s;
 }
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+.stat-tile-bar.active { background:linear-gradient(90deg, var(--good), rgba(0,184,148,0.1)); }
+.stat-label-top {
+  font-size:10px; font-weight:600; color:var(--ink3); letter-spacing:0.3px;
+  text-transform:uppercase; margin-bottom:8px;
 }
-
-/* Main Status Card */
-.status-hero {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.status-circle {
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  flex-shrink: 0;
-  transition: background 0.3s;
-}
-
-.status-circle.low { background: var(--green-bg); }
-.status-circle.watch { background: var(--orange-bg); }
-.status-circle.alert { background: var(--red-bg); animation: shake 0.6s infinite; }
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-3px); }
-  75% { transform: translateX(3px); }
-}
-
-.status-info { flex: 1; }
-
-.status-title {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.4px;
-  transition: color 0.3s;
-}
-
-.status-title.low { color: #1D8348; }
-.status-title.watch { color: #B7611A; }
-.status-title.alert { color: #C0392B; }
-
-.status-subtitle {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-top: 2px;
-  line-height: 1.4;
-}
-
-.status-meta {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 6px;
-}
-
-.ai-tag {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 7px;
-  border-radius: 4px;
-  letter-spacing: 0.2px;
-}
-
-.ai-tag.deepseek { background: #E3F0FF; color: var(--blue); }
-.ai-tag.claude { background: var(--orange-bg); color: var(--orange); }
-
-.time-tag {
-  font-size: 11px;
-  color: var(--text-tertiary);
-}
-
-/* Section */
-.section {
-  margin-top: 20px;
-  padding: 0 20px;
-}
-
-.section-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
-  padding-left: 4px;
-}
-
-/* Stats Row */
-.stats-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-}
-
-.stat-card {
-  background: var(--card);
-  border-radius: var(--radius-md);
-  padding: 14px 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.04);
-}
-
 .stat-number {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -1px;
-  color: var(--text-primary);
-  line-height: 1;
+  font-size:27px; font-weight:800; letter-spacing:-1px;
+  color:var(--ink1); line-height:1;
+  transition:color 0.3s;
+}
+.stat-number.active { color:var(--good); }
+.stat-unit { font-size:10px; color:var(--ink3); margin-top:5px; font-weight:500; }
+
+/* ── SECTION ── */
+.section { padding:0 20px; margin-top:28px; }
+.section-title {
+  font-size:12px; font-weight:700; color:var(--ink3);
+  letter-spacing:0.8px; text-transform:uppercase;
+  margin-bottom:12px;
 }
 
-.stat-label {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-top: 4px;
-  line-height: 1.4;
+/* ── SCENARIO LIST ── */
+.sc-wrap {
+  background:var(--white); border-radius:var(--r);
+  box-shadow:var(--card-shadow);
+  overflow:hidden;
 }
-
-/* Scenario List */
-.scenario-group {
-  background: var(--card);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.04);
+.sc-item {
+  display:flex; align-items:center; padding:15px 18px; gap:14px;
+  border-bottom:1px solid var(--border);
+  transition:background 0.15s;
 }
+.sc-item:last-child { border-bottom:none; }
+.sc-item:active { background:#FAFBFC; }
 
-.scenario-row {
-  display: flex;
-  align-items: center;
-  padding: 13px 16px;
-  gap: 12px;
-  border-bottom: 1px solid var(--separator);
-  transition: background 0.15s;
+.sc-icon-box {
+  width:40px; height:40px; border-radius:12px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:background 0.3s;
 }
+.sc-icon-box.low    { background:var(--good-lt); }
+.sc-icon-box.watch  { background:var(--warn-lt); }
+.sc-icon-box.alert  { background:var(--danger-lt); }
+.sc-icon-box.none   { background:var(--bg); }
 
-.scenario-row:last-child { border-bottom: none; }
-.scenario-row:active { background: var(--bg); }
-
-.sc-icon-wrap {
-  width: 36px; height: 36px;
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  flex-shrink: 0;
+.sc-text { flex:1; min-width:0; }
+.sc-name { font-size:14px; font-weight:600; color:var(--ink1); }
+.sc-desc {
+  font-size:12px; color:var(--ink3); margin-top:2px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  font-weight:400; line-height:1.4;
 }
-
-.sc-icon-wrap.low { background: var(--green-bg); }
-.sc-icon-wrap.watch { background: var(--orange-bg); }
-.sc-icon-wrap.alert { background: var(--red-bg); }
-.sc-icon-wrap.none { background: var(--bg); }
-
-.sc-content { flex: 1; min-width: 0; }
-
-.sc-name {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
+.sc-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+.sc-pill {
+  font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px;
 }
+.sc-pill.low    { background:var(--good-lt);   color:var(--good);   }
+.sc-pill.watch  { background:var(--warn-lt);   color:var(--warn);   }
+.sc-pill.alert  { background:var(--danger-lt); color:var(--danger); }
+.sc-pill.none   { background:var(--bg);        color:var(--ink3);   }
+.sc-time { font-size:10px; color:var(--ink4); font-weight:400; }
+.sc-chevron { color:var(--ink4); margin-left:4px; }
 
-.sc-detail {
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-top: 1px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.4;
-}
-
-.sc-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
-  flex-shrink: 0;
-}
-
-.sc-badge {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 3px 9px;
-  border-radius: 20px;
-}
-
-.sc-badge.low { background: var(--green-bg); color: #1D8348; }
-.sc-badge.watch { background: var(--orange-bg); color: #B7611A; }
-.sc-badge.alert { background: var(--red-bg); color: #C0392B; }
-.sc-badge.none { background: var(--bg); color: var(--text-tertiary); }
-
-.sc-time {
-  font-size: 10px;
-  color: var(--text-tertiary);
-}
-
-.sc-chevron {
-  font-size: 14px;
-  color: var(--text-tertiary);
-  margin-left: 4px;
-}
-
-/* Report Card */
+/* ── REPORT CARD ── */
 .report-card {
-  background: var(--card);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.04);
-  text-decoration: none;
-  display: block;
-  color: inherit;
+  display:flex; align-items:center; gap:16px;
+  background:var(--white); border-radius:var(--r);
+  box-shadow:var(--card-shadow);
+  padding:18px 20px; text-decoration:none; color:inherit;
+  transition: box-shadow 0.2s;
 }
-
-.report-inner {
-  display: flex;
-  align-items: center;
-  padding: 14px 16px;
-  gap: 12px;
+.report-card:active { box-shadow:var(--card-shadow-lg); }
+.report-icon-box {
+  width:50px; height:50px; border-radius:15px; flex-shrink:0;
+  background:linear-gradient(145deg, #7B74FF 0%, #4F46E5 100%);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 14px rgba(108,99,255,0.3);
 }
+.report-text { flex:1; }
+.report-title { font-size:15px; font-weight:700; color:var(--ink1); }
+.report-sub   { font-size:12px; color:var(--ink3); margin-top:3px; font-weight:400; }
 
-.report-icon-wrap {
-  width: 44px; height: 44px;
-  border-radius: 11px;
-  background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
+/* ── SETTINGS ── */
+.settings-card {
+  background:var(--white); border-radius:var(--r);
+  box-shadow:var(--card-shadow); overflow:hidden;
 }
-
-.report-texts { flex: 1; }
-.report-title-text { font-size: 15px; font-weight: 600; color: var(--text-primary); }
-.report-sub-text { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-.report-chevron { font-size: 18px; color: var(--text-tertiary); }
-
-/* Settings Button */
 .settings-row {
-  background: var(--card);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.04);
+  display:flex; align-items:center; padding:16px 20px; gap:14px;
+  border:none; background:none; width:100%; cursor:pointer; text-align:left;
+  transition:background 0.15s;
+}
+.settings-row:active { background:#FAFBFC; }
+.settings-icon-box {
+  width:40px; height:40px; border-radius:12px; flex-shrink:0;
+  background:var(--bg); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+}
+.settings-label { font-size:14px; font-weight:600; color:var(--ink1); flex:1; }
+
+/* ── ONBOARDING OVERLAY ── */
+.ob-overlay {
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(15,22,33,0.6); backdrop-filter:blur(8px);
+  align-items:flex-end;
+}
+.ob-overlay.open { display:flex; }
+.ob-sheet {
+  background:var(--white); width:100%;
+  border-radius:28px 28px 0 0;
+  max-height:92vh; overflow-y:auto;
+  padding-bottom:48px;
+  animation: sheetUp 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes sheetUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.ob-handle { width:40px; height:4px; border-radius:2px; background:var(--ink4); margin:14px auto 0; }
+
+.ob-head { padding:24px 26px 0; }
+.ob-eyebrow {
+  font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+  color:var(--purple); margin-bottom:6px;
+}
+.ob-title { font-size:26px; font-weight:800; letter-spacing:-0.7px; color:var(--ink1); line-height:1.2; }
+.ob-sub   { font-size:14px; color:var(--ink2); margin-top:8px; line-height:1.6; font-weight:400; }
+
+.ob-steps { padding:24px 26px 0; display:flex; flex-direction:column; gap:0; }
+
+.ob-step {
+  display:flex; gap:16px; padding-bottom:24px;
+  position:relative;
+}
+.ob-step:not(:last-child)::after {
+  content:''; position:absolute;
+  left:18px; top:38px; bottom:0; width:1px;
+  background:linear-gradient(to bottom, var(--ink4), transparent);
 }
 
-.settings-btn {
-  display: flex;
-  align-items: center;
-  padding: 14px 16px;
-  gap: 12px;
-  cursor: pointer;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
+.ob-step-left { display:flex; flex-direction:column; align-items:center; flex-shrink:0; }
+.ob-num {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:800; z-index:1;
+  transition:background 0.3s;
+}
+.ob-num.done    { background:var(--good); color:#fff; box-shadow:0 2px 8px rgba(0,184,148,0.4); }
+.ob-num.current { background:var(--purple); color:#fff; box-shadow:0 2px 8px rgba(108,99,255,0.4); }
+.ob-num.future  { background:var(--bg); color:var(--ink3); border:2px solid var(--ink4); }
+
+.ob-step-body { flex:1; padding-top:8px; }
+.ob-step-title { font-size:15px; font-weight:700; color:var(--ink1); }
+.ob-step-desc  { font-size:13px; color:var(--ink2); margin-top:4px; line-height:1.6; font-weight:400; }
+.ob-step-tag {
+  display:inline-flex; align-items:center; gap:4px;
+  margin-top:8px; font-size:11px; font-weight:700;
+  padding:4px 10px; border-radius:8px; letter-spacing:0.2px;
+}
+.ob-step-tag.done { background:var(--good-lt); color:var(--good); }
+.ob-step-tag.soon { background:var(--purple-lt); color:var(--purple); }
+
+.ob-cta {
+  margin:8px 26px 0;
+  background:linear-gradient(145deg, #7B74FF 0%, #4F46E5 100%);
+  color:#fff; font-size:16px; font-weight:700; letter-spacing:-0.2px;
+  border:none; border-radius:16px; padding:16px;
+  width:calc(100% - 52px); cursor:pointer; font-family:inherit;
+  box-shadow:0 4px 20px rgba(108,99,255,0.4);
+  transition:opacity 0.2s, transform 0.15s;
+}
+.ob-cta:active { opacity:0.88; transform:scale(0.98); }
+
+.ob-skip {
+  display:block; text-align:center; margin-top:14px;
+  font-size:13px; color:var(--ink3); font-weight:500;
+  cursor:pointer; padding:4px;
 }
 
-.settings-icon {
-  width: 36px; height: 36px;
-  border-radius: 9px;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
+/* ── MODAL ── */
+.modal-bg {
+  display:none; position:fixed; inset:0;
+  background:rgba(15,22,33,0.5); backdrop-filter:blur(6px);
+  z-index:100; align-items:flex-end;
 }
-
-.settings-label { font-size: 15px; font-weight: 500; color: var(--text-primary); flex: 1; }
-
-/* Modal */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  z-index: 100;
-  align-items: flex-end;
-}
-
-.modal-overlay.open { display: flex; }
-
+.modal-bg.open { display:flex; }
 .modal-sheet {
-  background: var(--bg);
-  width: 100%;
-  border-radius: 16px 16px 0 0;
-  padding-bottom: 40px;
-  max-height: 85vh;
-  overflow-y: auto;
+  background:var(--white); width:100%;
+  border-radius:28px 28px 0 0;
+  max-height:92vh; overflow-y:auto; padding-bottom:48px;
 }
-
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px 12px;
+.modal-handle { width:40px; height:4px; background:var(--ink4); border-radius:2px; margin:14px auto 0; }
+.modal-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 24px 16px; border-bottom:1px solid var(--border);
 }
-
-.modal-title { font-size: 17px; font-weight: 700; }
-
-.modal-close {
-  font-size: 15px;
-  color: var(--blue);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  font-family: inherit;
+.modal-nav-title { font-size:17px; font-weight:800; letter-spacing:-0.3px; }
+.modal-done-btn {
+  font-size:14px; font-weight:700; color:var(--purple);
+  background:none; border:none; cursor:pointer; font-family:inherit; padding:4px 8px;
 }
-
-.modal-section {
-  margin: 0 20px 12px;
-  background: var(--card);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+.modal-grp {
+  margin:18px 20px 0; background:var(--white);
+  border:1px solid var(--border); border-radius:var(--r-md); overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
 }
-
+.modal-grp-title {
+  font-size:10px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase;
+  color:var(--ink3); padding:10px 16px 2px;
+}
 .modal-field {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--separator);
-  gap: 12px;
+  display:flex; align-items:center; padding:13px 16px;
+  border-bottom:1px solid var(--border); gap:10px;
 }
-
-.modal-field:last-child { border-bottom: none; }
-
-.field-label {
-  font-size: 15px;
-  color: var(--text-primary);
-  width: 100px;
-  flex-shrink: 0;
-}
-
+.modal-field:last-child { border-bottom:none; }
+.field-label { font-size:14px; color:var(--ink2); width:84px; flex-shrink:0; font-weight:500; }
 .field-input {
-  flex: 1;
-  font-size: 15px;
-  color: var(--text-secondary);
-  border: none;
-  outline: none;
-  background: none;
-  text-align: right;
-  font-family: inherit;
+  flex:1; font-size:14px; color:var(--ink1); font-weight:600;
+  background:none; border:none; outline:none; text-align:right; font-family:inherit;
 }
+.field-input::placeholder { color:var(--ink4); font-weight:400; }
+.save-button {
+  display:block; margin:20px 20px 0; width:calc(100% - 40px);
+  background:linear-gradient(145deg, #7B74FF 0%, #4F46E5 100%);
+  color:#fff; font-size:15px; font-weight:700;
+  border:none; border-radius:14px; padding:15px;
+  cursor:pointer; font-family:inherit;
+  box-shadow:0 4px 16px rgba(108,99,255,0.35);
+  transition:opacity 0.2s, transform 0.15s;
+}
+.save-button:active { opacity:0.88; transform:scale(0.98); }
 
-.save-btn {
-  display: block;
-  width: calc(100% - 40px);
-  margin: 8px 20px 0;
-  background: var(--blue);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-md);
-  padding: 14px;
-  font-size: 17px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:108px; left:50%;
+  transform:translateX(-50%) translateY(10px);
+  background:var(--ink1); color:#fff;
+  padding:11px 22px; border-radius:22px;
+  font-size:13px; font-weight:600; z-index:300;
+  opacity:0; pointer-events:none;
+  transition:opacity 0.25s, transform 0.25s;
+  white-space:nowrap; box-shadow:0 8px 28px rgba(0,0,0,0.2);
 }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-/* Loading */
-.skeleton {
-  background: linear-gradient(90deg, #E5E5EA 25%, #F2F2F7 50%, #E5E5EA 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
-  border-radius: 8px;
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
+/* ── FADE ANIMATION ── */
+.fade { animation:fadeUp 0.5s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 </style>
 </head>
 <body>
 
-<!-- Top Area -->
-<div class="top-area">
-  <div class="top-row">
-    <div class="app-name">小路光 Dlight</div>
-    <div class="live-badge">
-      <div class="live-dot"></div>
-      即時監測中
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L9.5 8.5H3L8.5 12.5L6 19L12 15L18 19L15.5 12.5L21 8.5H14.5L12 2Z" fill="white" opacity="0.9"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-name">小路光</div>
+      <div class="brand-sub">Dlight AI Care</div>
     </div>
   </div>
+  <div class="live-chip">
+    <div class="live-chip-dot"></div>
+    即時監測
+  </div>
+</div>
 
-  <div class="status-hero">
-    <div class="status-circle low" id="status-circle">🌿</div>
-    <div class="status-info">
-      <div class="status-title low" id="status-title">載入中</div>
-      <div class="status-subtitle" id="status-subtitle">正在連線...</div>
-      <div class="status-meta">
-        <span class="ai-tag deepseek" id="ai-tag" style="display:none"></span>
-        <span class="time-tag" id="status-time"></span>
+<!-- HERO -->
+<div style="padding:0 20px;margin-top:16px" class="fade">
+  <div class="hero">
+    <div class="hero-gradient low" id="hero-gradient"></div>
+    <div class="hero-inner">
+      <div class="hero-badge low" id="hero-badge">
+        <div class="badge-dot"></div>
+        <span id="badge-text">狀態良好</span>
+      </div>
+      <div class="hero-big-title" id="hero-title">載入中</div>
+      <div class="hero-reason" id="hero-reason">正在連接系統...</div>
+      <div class="hero-divider"></div>
+      <div class="hero-meta">
+        <span class="ai-badge ds" id="ai-badge" style="display:none"></span>
+        <span class="hero-ts" id="hero-ts"></span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Stats -->
-<div class="section">
-  <div class="section-title">今日數據</div>
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-number" id="s-motion">—</div>
-      <div class="stat-label">移動次數</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="s-last">—</div>
-      <div class="stat-label">最後移動</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="s-wakeup">—</div>
-      <div class="stat-label">起床時間</div>
-    </div>
+<!-- STATS -->
+<div class="stats fade" style="animation-delay:.08s">
+  <div class="stat-tile">
+    <div class="stat-tile-bar" id="bar-motion"></div>
+    <div class="stat-label-top">移動次數</div>
+    <div class="stat-number" id="s-motion">—</div>
+    <div class="stat-unit">今日偵測</div>
+  </div>
+  <div class="stat-tile">
+    <div class="stat-tile-bar" id="bar-last"></div>
+    <div class="stat-label-top">最後移動</div>
+    <div class="stat-number" id="s-last">—</div>
+    <div class="stat-unit">台灣時間</div>
+  </div>
+  <div class="stat-tile">
+    <div class="stat-tile-bar" id="bar-wake"></div>
+    <div class="stat-label-top">起床時間</div>
+    <div class="stat-number" id="s-wake">—</div>
+    <div class="stat-unit">今日首次</div>
   </div>
 </div>
 
-<!-- Scenarios -->
-<div class="section">
-  <div class="section-title">五大情境監測</div>
-  <div class="scenario-group" id="scenario-group">
-    <div style="padding:24px;text-align:center;color:#AEAEB2;font-size:13px">載入中...</div>
+<!-- SCENARIOS -->
+<div class="section fade" style="animation-delay:.16s">
+  <div class="section-title">情境監測</div>
+  <div class="sc-wrap" id="sc-list">
+    <div style="padding:28px;text-align:center;color:var(--ink3);font-size:13px">連接中...</div>
   </div>
 </div>
 
-<!-- Report -->
-<div class="section">
+<!-- REPORT -->
+<div class="section fade" style="animation-delay:.22s">
   <div class="section-title">健康報告</div>
   <a class="report-card" href="report.html">
-    <div class="report-inner">
-      <div class="report-icon-wrap">📋</div>
-      <div class="report-texts">
-        <div class="report-title-text">昨日健康報告</div>
-        <div class="report-sub-text" id="report-sub">AI 自動生成，每日 08:00 更新</div>
-      </div>
-      <div class="report-chevron">›</div>
+    <div class="report-icon-box">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M9 12H15M9 16H15M17 21H7C5.9 21 5 20.1 5 19V5C5 3.9 5.9 3 7 3H13.5L19 8.5V19C19 20.1 18.1 21 17 21Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13 3V9H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
+    <div class="report-text">
+      <div class="report-title">昨日健康報告</div>
+      <div class="report-sub" id="report-sub">AI 自動生成，每日 08:00 更新</div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <path d="M9 18L15 12L9 6" stroke="var(--ink4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
   </a>
 </div>
 
-<!-- Settings -->
-<div class="section">
-  <div class="settings-row">
-    <button class="settings-btn" onclick="openSettings()">
-      <div class="settings-icon">⚙️</div>
+<!-- SETTINGS -->
+<div class="section fade" style="animation-delay:.28s">
+  <div class="section-title">設定</div>
+  <div class="settings-card">
+    <button class="settings-row" onclick="openSettings()">
+      <div class="settings-icon-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="var(--ink2)" stroke-width="2"/>
+          <path d="M19.4 15C19.1 15.7 19.3 16.5 19.9 17.1L19.95 17.15C20.4 17.6 20.4 18.35 19.95 18.8L18.8 19.95C18.35 20.4 17.6 20.4 17.15 19.95L17.1 19.9C16.5 19.3 15.7 19.1 15 19.4C14.3 19.7 13.85 20.35 13.85 21.1V21.25C13.85 21.9 13.3 22.4 12.65 22.4H11.35C10.7 22.4 10.15 21.9 10.15 21.25V21.1C10.15 20.35 9.7 19.7 9 19.4C8.3 19.1 7.5 19.3 6.9 19.9L6.85 19.95C6.4 20.4 5.65 20.4 5.2 19.95L4.05 18.8C3.6 18.35 3.6 17.6 4.05 17.15L4.1 17.1C4.7 16.5 4.9 15.7 4.6 15C4.3 14.3 3.65 13.85 2.9 13.85H2.75C2.1 13.85 1.6 13.3 1.6 12.65V11.35C1.6 10.7 2.1 10.15 2.75 10.15H2.9C3.65 10.15 4.3 9.7 4.6 9C4.9 8.3 4.7 7.5 4.1 6.9L4.05 6.85C3.6 6.4 3.6 5.65 4.05 5.2L5.2 4.05C5.65 3.6 6.4 3.6 6.85 4.05L6.9 4.1C7.5 4.7 8.3 4.9 9 4.6C9.7 4.3 10.15 3.65 10.15 2.9V2.75C10.15 2.1 10.7 1.6 11.35 1.6H12.65C13.3 1.6 13.85 2.1 13.85 2.75V2.9C13.85 3.65 14.3 4.3 15 4.6C15.7 4.9 16.5 4.7 17.1 4.1L17.15 4.05C17.6 3.6 18.35 3.6 18.8 4.05L19.95 5.2C20.4 5.65 20.4 6.4 19.95 6.85L19.9 6.9C19.3 7.5 19.1 8.3 19.4 9C19.7 9.7 20.35 10.15 21.1 10.15H21.25C21.9 10.15 22.4 10.7 22.4 11.35V12.65C22.4 13.3 21.9 13.85 21.25 13.85H21.1C20.35 13.85 19.7 14.3 19.4 15Z" stroke="var(--ink2)" stroke-width="2"/>
+        </svg>
+      </div>
       <div class="settings-label">作息基本設定</div>
-      <div class="report-chevron">›</div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path d="M9 18L15 12L9 6" stroke="var(--ink4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div style="height:1px;background:var(--border);margin:0 20px"></div>
+    <button class="settings-row" onclick="openOnboarding()">
+      <div class="settings-icon-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="var(--ink2)" stroke-width="2"/>
+          <path d="M12 8V12M12 16H12.01" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="settings-label">安裝引導 SOP</div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path d="M9 18L15 12L9 6" stroke="var(--ink4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
   </div>
 </div>
 
-<!-- Settings Modal -->
-<div class="modal-overlay" id="settings-modal">
-  <div class="modal-sheet">
-    <div class="modal-header">
-      <div class="modal-title">作息基本設定</div>
-      <button class="modal-close" onclick="closeSettings()">完成</button>
+<!-- ONBOARDING OVERLAY -->
+<div class="ob-overlay" id="ob-overlay">
+  <div class="ob-sheet">
+    <div class="ob-handle"></div>
+    <div class="ob-head">
+      <div class="ob-eyebrow">快速引導</div>
+      <div class="ob-title">歡迎使用<br>小路光 Dlight</div>
+      <div class="ob-sub">請完成以下設定步驟，讓 AI 開始守護您的家人。</div>
     </div>
+    <div class="ob-steps">
 
-    <div class="modal-section">
+      <div class="ob-step">
+        <div class="ob-step-left">
+          <div class="ob-num done">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="ob-step-body">
+          <div class="ob-step-title">安裝 Aqara Hub M2</div>
+          <div class="ob-step-desc">插上電源，等待 LED 藍燈常亮。建議放在家中 WiFi 訊號穩定的地方。</div>
+          <span class="ob-step-tag done">✓ 已完成</span>
+        </div>
+      </div>
+
+      <div class="ob-step">
+        <div class="ob-step-left">
+          <div class="ob-num done">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="ob-step-body">
+          <div class="ob-step-title">安裝人體感應器（PIR）</div>
+          <div class="ob-step-desc">裝於走廊或臥室門口，高度 1.5–2m，確保涵蓋長輩的日常動線。</div>
+          <span class="ob-step-tag done">✓ 已完成</span>
+        </div>
+      </div>
+
+      <div class="ob-step">
+        <div class="ob-step-left">
+          <div class="ob-num done">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="ob-step-body">
+          <div class="ob-step-title">配對 Aqara Home App</div>
+          <div class="ob-step-desc">App Store 搜尋「Aqara Home」，依 App 指引完成 Hub 與感應器配對，確保設備上線。</div>
+          <span class="ob-step-tag done">✓ 已完成</span>
+        </div>
+      </div>
+
+      <div class="ob-step">
+        <div class="ob-step-left">
+          <div class="ob-num done">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="ob-step-body">
+          <div class="ob-step-title">填寫長輩作息資料</div>
+          <div class="ob-step-desc">點選主頁「作息基本設定」，輸入起床時間、午休時段。AI 將依此個人化分析標準。</div>
+          <span class="ob-step-tag done">✓ 已完成</span>
+        </div>
+      </div>
+
+      <div class="ob-step">
+        <div class="ob-step-left">
+          <div class="ob-num current">5</div>
+        </div>
+        <div class="ob-step-body">
+          <div class="ob-step-title">綁定 LINE 家屬通知</div>
+          <div class="ob-step-desc">掃描下方 QR Code 完成 LINE 綁定，當 AI 判斷需關注時自動推播通知給指定家屬。</div>
+          <!-- TODO: 串接 LINE Messaging API，n8n 在 notify_family=true 時觸發推播，並在此顯示 QR Code -->
+          <span class="ob-step-tag soon">⏳ 即將開放</span>
+        </div>
+      </div>
+
+    </div>
+    <button class="ob-cta" onclick="closeOnboarding()">我知道了，開始使用</button>
+    <div class="ob-skip" onclick="closeOnboarding()">略過引導</div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-nav">
+      <div class="modal-nav-title">作息基本設定</div>
+      <button class="modal-done-btn" onclick="closeSettings()">完成</button>
+    </div>
+    <div class="modal-grp">
+      <div class="modal-grp-title">基本資料</div>
       <div class="modal-field">
         <div class="field-label">長輩稱呼</div>
-        <input class="field-input" type="text" id="f-name" value="爸爸" placeholder="爸爸">
+        <input class="field-input" type="text" id="f-name" placeholder="爸爸">
       </div>
+    </div>
+    <div class="modal-grp">
+      <div class="modal-grp-title">作息時間</div>
       <div class="modal-field">
         <div class="field-label">平常起床</div>
-        <input class="field-input" type="time" id="f-wakeup" value="07:50">
+        <input class="field-input" type="time" id="f-wakeup">
       </div>
       <div class="modal-field">
         <div class="field-label">午休開始</div>
-        <input class="field-input" type="time" id="f-nap-start" value="13:00">
+        <input class="field-input" type="time" id="f-nap-start">
       </div>
       <div class="modal-field">
         <div class="field-label">午休時長</div>
-        <input class="field-input" type="number" id="f-nap-dur" value="90" placeholder="分鐘">
+        <input class="field-input" type="number" id="f-nap-dur" placeholder="分鐘（如 90）">
       </div>
+    </div>
+    <div class="modal-grp">
+      <div class="modal-grp-title">外出習慣</div>
       <div class="modal-field">
         <div class="field-label">外出開始</div>
-        <input class="field-input" type="time" id="f-out-start" value="09:00">
+        <input class="field-input" type="time" id="f-out-start">
       </div>
       <div class="modal-field">
         <div class="field-label">外出結束</div>
-        <input class="field-input" type="time" id="f-out-end" value="11:00">
+        <input class="field-input" type="time" id="f-out-end">
       </div>
     </div>
-
-    <button class="save-btn" onclick="saveSettings()">儲存設定</button>
+    <button class="save-button" onclick="saveSettings()">儲存設定</button>
   </div>
 </div>
+
+<div class="toast" id="toast">✓ 設定已儲存</div>
 
 <script>
 const SB_URL = DLIGHT_CONFIG.SUPABASE_URL;
 const SB_KEY = DLIGHT_CONFIG.SUPABASE_ANON_KEY;
-const UID = new URLSearchParams(location.search).get('uid') || 1;
+const UID    = new URLSearchParams(location.search).get('uid') || 1;
+const OB_KEY = 'dlight_onboarded_' + UID;
 
-const RISK_CONFIG = {
-  low:   { icon: '🌿', titleClass: 'low',   circleClass: 'low',   label: '狀態良好' },
-  watch: { icon: '👁️',  titleClass: 'watch', circleClass: 'watch', label: '需要觀察' },
-  alert: { icon: '🚨', titleClass: 'alert', circleClass: 'alert', label: '立即關注' }
+const RISK = {
+  low:   { badge:'low',   badgeText:'狀態良好', title:'一切正常' },
+  watch: { badge:'watch', badgeText:'需要觀察', title:'請留意狀況' },
+  alert: { badge:'alert', badgeText:'立即關注', title:'需要確認' }
 };
-
-const SCENARIOS = {
-  1: { name: '夜間起床陪伴', icon: '🌙' },
-  2: { name: '早晨起床確認', icon: '☀️' },
-  3: { name: '日間活動量監測', icon: '🚶' },
-  4: { name: '離開安全區域', icon: '🚪' },
-  5: { name: '每日健康報告', icon: '📋' }
+const SC = {
+  1:{name:'夜間起床陪伴'},
+  2:{name:'早晨起床確認'},
+  3:{name:'日間活動量監測'},
+  4:{name:'離開安全區域'},
+  5:{name:'每日健康報告'}
 };
+const SC_ICONS = {
+  1:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  2:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  3:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 4a1 1 0 11-2 0 1 1 0 012 0zM5 20l3-6 4 2 3-4 4 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  4:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/><path d="M9 3v18M15 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  5:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 16h6M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h6.5L19 8.5V19a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+};
+const BL = { low:'良好', watch:'觀察中', alert:'需關注', none:'待觸發' };
+const SC_COLORS = { low:'var(--good)', watch:'var(--warn)', alert:'var(--danger)', none:'var(--ink4)' };
 
-async function sbGet(table, params = '') {
-  const res = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+async function sbGet(t, q='') {
+  const r = await fetch(`${SB_URL}/rest/v1/${t}?${q}`,{
+    headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`}
   });
-  return res.json();
+  return r.json();
 }
-
-function fmtTime(iso) {
+function twTime(iso) {
   if (!iso) return '—';
-  const d = new Date(iso);
-  return d.toLocaleTimeString('zh-TW', {
-    hour: '2-digit', minute: '2-digit',
-    timeZone: 'Asia/Taipei', hour12: false
-  });
+  return new Date(iso).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Taipei',hour12:false});
 }
-
-function timeAgo(iso) {
+function ago(iso) {
   if (!iso) return '';
-  const m = Math.floor((Date.now() - new Date(iso)) / 60000);
-  if (m < 1) return '剛剛';
-  if (m < 60) return `${m} 分鐘前`;
+  const m = Math.floor((Date.now()-new Date(iso))/60000);
+  if (m<1) return '剛剛'; if (m<60) return `${m} 分鐘前`;
   return `${Math.floor(m/60)} 小時前`;
+}
+function todayTW() {
+  return new Date().toLocaleString('sv-SE',{timeZone:'Asia/Taipei'}).slice(0,10);
 }
 
 async function loadAll() {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayTW();
+  const ds = await sbGet('ai_decisions',`user_id=eq.${UID}&order=created_at.desc&limit=1`);
+  const d = ds[0]; const rk = d?.risk_level||'low'; const ri = RISK[rk];
 
-  // Latest decision
-  const decisions = await sbGet('ai_decisions', `user_id=eq.${UID}&order=created_at.desc&limit=1`);
-  const latest = decisions[0];
-  const rk = latest?.risk_level || 'low';
-  const rc = RISK_CONFIG[rk];
-
-  const circle = document.getElementById('status-circle');
-  const title = document.getElementById('status-title');
-  circle.className = `status-circle ${rc.circleClass}`;
-  circle.textContent = rc.icon;
-  title.className = `status-title ${rc.titleClass}`;
-  title.textContent = rc.label;
-  document.getElementById('status-subtitle').textContent = latest?.ai_reasoning || '目前無異常紀錄';
-  document.getElementById('status-time').textContent = latest ? timeAgo(latest.created_at) : '';
-
-  const tag = document.getElementById('ai-tag');
-  if (latest?.ai_source) {
-    tag.style.display = 'inline-block';
-    tag.className = `ai-tag ${latest.ai_source === 'claude_fallback' ? 'claude' : 'deepseek'}`;
-    tag.textContent = latest.ai_source === 'claude_fallback' ? 'Claude' : 'DeepSeek';
+  document.getElementById('hero-gradient').className = `hero-gradient ${rk}`;
+  const badge = document.getElementById('hero-badge');
+  badge.className = `hero-badge ${rk}`;
+  document.getElementById('badge-text').textContent = ri.badgeText;
+  document.getElementById('hero-title').textContent = d ? ri.title : '連接中';
+  document.getElementById('hero-reason').textContent = d?.ai_reasoning||'正在連接系統，請稍候...';
+  document.getElementById('hero-ts').textContent = d ? ago(d.created_at) : '';
+  const aib = document.getElementById('ai-badge');
+  if (d?.ai_source) {
+    aib.style.display='inline-block';
+    aib.className = `ai-badge ${d.ai_source==='claude_fallback'?'cl':'ds'}`;
+    aib.textContent = d.ai_source==='claude_fallback'?'Claude':'DeepSeek';
   }
 
-  // Events
-  const events = await sbGet('sensor_events', `user_id=eq.${UID}&triggered_at=gte.${today}T00:00:00&order=triggered_at.desc`);
-  document.getElementById('s-motion').textContent = events.length || '0';
-  document.getElementById('s-last').textContent = events[0] ? fmtTime(events[0].triggered_at) : '—';
+  const evs = await sbGet('sensor_events',`user_id=eq.${UID}&triggered_at=gte.${today}T00:00:00+08:00&order=triggered_at.desc`);
+  const cnt = evs.length;
+  const mEl = document.getElementById('s-motion');
+  mEl.textContent=cnt||'0'; mEl.className=`stat-number${cnt>0?' active':''}`;
+  document.getElementById('bar-motion').className=`stat-tile-bar${cnt>0?' active':''}`;
+  const lEl = document.getElementById('s-last');
+  lEl.textContent=evs[0]?twTime(evs[0].triggered_at):'—';
+  if(evs[0]){lEl.className='stat-number active';document.getElementById('bar-last').className='stat-tile-bar active';}
+  const wk=[...evs].reverse().find(e=>{
+    const h=parseInt(new Date(e.triggered_at).toLocaleString('sv-SE',{timeZone:'Asia/Taipei'}).slice(11,13));
+    return h>=5&&h<=11;
+  });
+  const wEl=document.getElementById('s-wake');
+  wEl.textContent=wk?twTime(wk.triggered_at):'—';
+  if(wk){wEl.className='stat-number active';document.getElementById('bar-wake').className='stat-tile-bar active';}
 
-  const wakeup = events.filter(e =>
-    ['motion_corridor','door_bedroom'].includes(e.device_type) &&
-    new Date(e.triggered_at).getHours() >= 5 &&
-    new Date(e.triggered_at).getHours() <= 11
-  ).pop();
-  document.getElementById('s-wakeup').textContent = wakeup ? fmtTime(wakeup.triggered_at) : '—';
-
-  // All decisions today
-  const allD = await sbGet('ai_decisions', `user_id=eq.${UID}&created_at=gte.${today}T00:00:00&order=created_at.desc`);
-  const byScenario = {};
-  allD.forEach(d => { if (!byScenario[d.scenario]) byScenario[d.scenario] = d; });
-
-  const group = document.getElementById('scenario-group');
-  group.innerHTML = [1,2,3,4,5].map((i, idx) => {
-    const d = byScenario[i];
-    const rk = d?.risk_level || 'none';
-    const sc = SCENARIOS[i];
-    const label = d ? ({ low:'良好', watch:'觀察中', alert:'需關注' }[rk] || '良好') : '待觸發';
-    const isLast = idx === 4;
-    return `
-      <div class="scenario-row" style="${isLast ? '' : ''}">
-        <div class="sc-icon-wrap ${rk}">${sc.icon}</div>
-        <div class="sc-content">
-          <div class="sc-name">${sc.name}</div>
-          <div class="sc-detail">${d?.ai_reasoning || '等待感測器觸發'}</div>
-        </div>
-        <div class="sc-right">
-          <div class="sc-badge ${rk}">${label}</div>
-          <div class="sc-time">${d ? fmtTime(d.created_at) : '今日尚無'}</div>
-        </div>
-        <div class="sc-chevron">›</div>
-      </div>`;
+  const allD=await sbGet('ai_decisions',`user_id=eq.${UID}&created_at=gte.${today}T00:00:00+08:00&order=created_at.desc`);
+  const byS={};
+  allD.forEach(x=>{if(!byS[x.scenario])byS[x.scenario]=x;});
+  document.getElementById('sc-list').innerHTML=[1,2,3,4,5].map(i=>{
+    const sc=SC[i]; const dd=byS[i]; const rk=dd?.risk_level||'none';
+    const iconColor = rk==='low'?'var(--good)':rk==='watch'?'var(--warn)':rk==='alert'?'var(--danger)':'var(--ink3)';
+    return `<div class="sc-item">
+      <div class="sc-icon-box ${rk}" style="color:${iconColor}">${SC_ICONS[i]}</div>
+      <div class="sc-text">
+        <div class="sc-name">${sc.name}</div>
+        <div class="sc-desc">${dd?.ai_reasoning||'等待感測器觸發'}</div>
+      </div>
+      <div class="sc-right">
+        <span class="sc-pill ${rk}">${BL[rk]}</span>
+        <span class="sc-time">${dd?twTime(dd.created_at):'今日尚無'}</span>
+      </div>
+      <svg class="sc-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M9 18L15 12L9 6" stroke="var(--ink4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>`;
   }).join('');
 
-  // Report
-  const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
-  const reports = await sbGet('daily_reports', `user_id=eq.${UID}&report_date=eq.${yesterday}`);
-  if (reports[0]) {
-    document.getElementById('report-sub').textContent =
-      reports[0].risk_summary === 'normal' ? '昨日一切正常，點此查看' : '昨日有需關注項目，點此查看';
-  }
+  const yest=new Date(Date.now()-864e5).toLocaleString('sv-SE',{timeZone:'Asia/Taipei'}).slice(0,10);
+  const reps=await sbGet('daily_reports',`user_id=eq.${UID}&report_date=eq.${yest}`);
+  if(reps[0]) document.getElementById('report-sub').textContent=
+    reps[0].risk_summary==='normal'?'昨日一切正常，點此查看':'昨日有需關注項目，點此查看';
 }
 
-function openSettings() {
-  document.getElementById('settings-modal').classList.add('open');
+// Onboarding
+function openOnboarding()  { document.getElementById('ob-overlay').classList.add('open'); }
+function closeOnboarding() {
+  document.getElementById('ob-overlay').classList.remove('open');
+  localStorage.setItem(OB_KEY,'1');
+}
+function checkOnboarding() {
+  if (!localStorage.getItem(OB_KEY)) openOnboarding();
 }
 
-function closeSettings() {
-  document.getElementById('settings-modal').classList.remove('open');
+// Settings
+async function loadSettings() {
+  try {
+    const data=await sbGet('user_settings',`user_id=eq.${UID}&limit=1`);
+    const s=data[0]; if(!s) return;
+    if(s.elder_name)       document.getElementById('f-name').value=s.elder_name;
+    if(s.wakeup_time)      document.getElementById('f-wakeup').value=s.wakeup_time.slice(0,5);
+    if(s.nap_start)        document.getElementById('f-nap-start').value=s.nap_start.slice(0,5);
+    if(s.nap_duration_min) document.getElementById('f-nap-dur').value=s.nap_duration_min;
+    if(s.outing_start)     document.getElementById('f-out-start').value=s.outing_start.slice(0,5);
+    if(s.outing_end)       document.getElementById('f-out-end').value=s.outing_end.slice(0,5);
+  } catch(e){}
 }
-
-document.getElementById('settings-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeSettings();
-});
+function openSettings()  { loadSettings(); document.getElementById('modal-bg').classList.add('open'); }
+function closeSettings() { document.getElementById('modal-bg').classList.remove('open'); }
+document.getElementById('modal-bg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeSettings();});
+document.getElementById('ob-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeOnboarding();});
 
 async function saveSettings() {
-  await fetch(`${SB_URL}/rest/v1/user_settings`, {
-    method: 'POST',
-    headers: {
-      'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`,
-      'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates'
-    },
-    body: JSON.stringify({
-      user_id: parseInt(UID),
-      elder_name: document.getElementById('f-name').value,
-      wakeup_time: document.getElementById('f-wakeup').value,
-      nap_start: document.getElementById('f-nap-start').value,
-      nap_duration_min: parseInt(document.getElementById('f-nap-dur').value),
-      outing_start: document.getElementById('f-out-start').value,
-      outing_end: document.getElementById('f-out-end').value,
-      updated_at: new Date().toISOString()
-    })
-  });
-  closeSettings();
+  try {
+    const ex=await sbGet('user_settings',`user_id=eq.${UID}&limit=1`);
+    const method=ex.length>0?'PATCH':'POST';
+    const url=ex.length>0?`${SB_URL}/rest/v1/user_settings?user_id=eq.${UID}`:`${SB_URL}/rest/v1/user_settings`;
+    await fetch(url,{
+      method,
+      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({
+        user_id:parseInt(UID),
+        elder_name:document.getElementById('f-name').value||null,
+        wakeup_time:document.getElementById('f-wakeup').value||null,
+        nap_start:document.getElementById('f-nap-start').value||null,
+        nap_duration_min:parseInt(document.getElementById('f-nap-dur').value)||null,
+        outing_start:document.getElementById('f-out-start').value||null,
+        outing_end:document.getElementById('f-out-end').value||null,
+        updated_at:new Date().toISOString()
+      })
+    });
+    closeSettings();
+    const t=document.getElementById('toast');
+    t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200);
+  } catch(e){alert('儲存失敗，請稍後再試');}
 }
 
 loadAll();
+checkOnboarding();
 setInterval(loadAll, DLIGHT_CONFIG.REFRESH_INTERVAL_MS);
 </script>
 </body>
