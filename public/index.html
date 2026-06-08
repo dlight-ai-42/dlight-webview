@@ -35,8 +35,6 @@ body {
   min-height: 100vh; padding-bottom: 100px;
   -webkit-font-smoothing: antialiased;
 }
-
-/* ── NAVBAR ── */
 .navbar { display:flex; align-items:center; justify-content:space-between; padding:54px 24px 0; }
 .brand { display:flex; align-items:center; gap:10px; }
 .brand-mark {
@@ -56,8 +54,6 @@ body {
 }
 .live-dot { width:5px; height:5px; border-radius:50%; background:var(--good); animation:lp 2.5s ease-in-out infinite; }
 @keyframes lp { 0%,100%{opacity:1} 50%{opacity:0.2} }
-
-/* ── HERO ── */
 .hero {
   margin:18px 20px 0; background:var(--white); border-radius:var(--r);
   box-shadow:var(--card-shadow-lg); overflow:hidden; position:relative;
@@ -85,8 +81,6 @@ body {
 .ai-badge.ds { background:#EBF5FF; color:#2B6CB0; }
 .ai-badge.cl { background:var(--warn-lt); color:#B7651A; }
 .hero-ts { font-size:11px; color:var(--ink3); font-weight:400; }
-
-/* ── STATS ── */
 .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:12px 20px 0; }
 .stat-tile { background:var(--white); border-radius:var(--r-md); box-shadow:var(--card-shadow); padding:16px 14px 14px; position:relative; overflow:hidden; }
 .stat-tile-bar { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--purple),rgba(108,99,255,0.1)); transition:background 0.4s; }
@@ -95,12 +89,8 @@ body {
 .stat-number { font-size:27px; font-weight:800; letter-spacing:-1px; color:var(--ink1); line-height:1; transition:color 0.3s; }
 .stat-number.active { color:var(--good); }
 .stat-unit { font-size:10px; color:var(--ink3); margin-top:5px; font-weight:500; }
-
-/* ── SECTION ── */
 .section { padding:0 20px; margin-top:28px; }
 .section-title { font-size:12px; font-weight:700; color:var(--ink3); letter-spacing:0.8px; text-transform:uppercase; margin-bottom:12px; }
-
-/* ── SCENARIO LIST ── */
 .sc-wrap { background:var(--white); border-radius:var(--r); box-shadow:var(--card-shadow); overflow:hidden; }
 .sc-item { display:flex; align-items:center; padding:15px 18px; gap:14px; border-bottom:1px solid var(--border); transition:background 0.15s; }
 .sc-item:last-child { border-bottom:none; }
@@ -120,8 +110,6 @@ body {
 .sc-pill.alert { background:var(--danger-lt); color:var(--danger); }
 .sc-pill.none  { background:var(--bg);        color:var(--ink3); }
 .sc-time { font-size:10px; color:var(--ink4); font-weight:400; }
-
-/* ── REPORT ── */
 .report-card {
   display:flex; align-items:center; gap:16px;
   background:var(--white); border-radius:var(--r); box-shadow:var(--card-shadow);
@@ -137,16 +125,12 @@ body {
 .report-text { flex:1; }
 .report-title-txt { font-size:15px; font-weight:700; color:var(--ink1); }
 .report-sub-txt { font-size:12px; color:var(--ink3); margin-top:3px; font-weight:400; }
-
-/* ── SETTINGS ── */
 .settings-card { background:var(--white); border-radius:var(--r); box-shadow:var(--card-shadow); overflow:hidden; }
 .settings-row { display:flex; align-items:center; padding:16px 20px; gap:14px; border:none; background:none; width:100%; cursor:pointer; text-align:left; transition:background 0.15s; font-family:inherit; }
 .settings-row:active { background:#FAFBFC; }
 .settings-row + .settings-row { border-top:1px solid var(--border); }
 .settings-icon-box { width:40px; height:40px; border-radius:12px; flex-shrink:0; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; }
 .settings-label { font-size:14px; font-weight:600; color:var(--ink1); flex:1; }
-
-/* ── ONBOARDING ── */
 .ob-overlay { display:none; position:fixed; inset:0; z-index:200; background:rgba(15,22,33,0.6); backdrop-filter:blur(8px); align-items:flex-end; }
 .ob-overlay.open { display:flex; }
 .ob-sheet {
@@ -177,7 +161,7 @@ body {
 .ob-body { flex:1; padding-top:8px; }
 .ob-step-title { font-size:15px; font-weight:700; color:var(--ink1); }
 .ob-step-desc  { font-size:13px; color:var(--ink2); margin-top:4px; line-height:1.6; font-weight:400; }
-.ob-tag { display:inline-flex; align-items:center; gap:4px; margin-top:8px; font-size:11px; font-weight:700; padding:4px 10px; border-radius:8px; letter-spacing:0.2px; }
+.ob-tag { display:inline-flex; align-items:center; gap:4px; margin-top:8px; font-size:11px; font-weight:700; padding:4px 10px; border-radius:8px; }
 .ob-tag.done { background:var(--good-lt); color:var(--good); }
 .ob-tag.soon { background:var(--purple-lt); color:var(--purple); }
 .ob-cta {
@@ -191,8 +175,6 @@ body {
 }
 .ob-cta:active { opacity:0.88; transform:scale(0.98); }
 .ob-skip { display:block; text-align:center; margin-top:14px; font-size:13px; color:var(--ink3); font-weight:500; cursor:pointer; padding:4px; }
-
-/* ── MODAL ── */
 .modal-bg { display:none; position:fixed; inset:0; background:rgba(15,22,33,0.5); backdrop-filter:blur(6px); z-index:100; align-items:flex-end; }
 .modal-bg.open { display:flex; }
 .modal-sheet { background:var(--white); width:100%; border-radius:28px 28px 0 0; max-height:92vh; overflow-y:auto; padding-bottom:48px; }
@@ -217,8 +199,6 @@ body {
   transition:opacity 0.2s, transform 0.15s;
 }
 .save-button:active { opacity:0.88; transform:scale(0.98); }
-
-/* ── TOAST ── */
 .toast {
   position:fixed; bottom:108px; left:50%;
   transform:translateX(-50%) translateY(10px);
@@ -228,14 +208,12 @@ body {
   white-space:nowrap; box-shadow:0 8px 28px rgba(0,0,0,0.2);
 }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
 .fade { animation:fadeUp 0.5s ease both; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
   <div class="brand">
     <div class="brand-mark">
@@ -251,7 +229,6 @@ body {
   <div class="live-chip"><div class="live-dot"></div>即時監測</div>
 </div>
 
-<!-- HERO -->
 <div style="padding:0 20px;margin-top:16px" class="fade">
   <div class="hero">
     <div class="hero-gradient low" id="hero-gradient"></div>
@@ -271,7 +248,6 @@ body {
   </div>
 </div>
 
-<!-- STATS -->
 <div class="stats fade" style="animation-delay:.08s">
   <div class="stat-tile">
     <div class="stat-tile-bar" id="bar-motion"></div>
@@ -293,15 +269,13 @@ body {
   </div>
 </div>
 
-<!-- SCENARIOS -->
 <div class="section fade" style="animation-delay:.16s">
   <div class="section-title">情境監測</div>
   <div class="sc-wrap" id="sc-list">
-    <div style="padding:28px;text-align:center;color:var(--ink3);font-size:13px;font-weight:500">連接中...</div>
+    <div style="padding:28px;text-align:center;color:var(--ink3);font-size:13px;font-weight:500">載入中...</div>
   </div>
 </div>
 
-<!-- REPORT -->
 <div class="section fade" style="animation-delay:.22s">
   <div class="section-title">健康報告</div>
   <a class="report-card" href="report.html">
@@ -321,7 +295,6 @@ body {
   </a>
 </div>
 
-<!-- SETTINGS -->
 <div class="section fade" style="animation-delay:.28s">
   <div class="section-title">設定</div>
   <div class="settings-card">
@@ -407,7 +380,7 @@ body {
         <div class="ob-body">
           <div class="ob-step-title">綁定 LINE 家屬通知</div>
           <div class="ob-step-desc">掃描下方 QR Code 完成 LINE 綁定，當 AI 判斷需關注時自動推播通知給指定家屬。</div>
-          <!-- TODO: 串接 LINE Messaging API，n8n 在 notify_family=true 時觸發推播，並在此顯示 QR Code -->
+          <!-- TODO: 串接 LINE Messaging API，n8n notify_family=true 時觸發推播，此處顯示 QR Code -->
           <span class="ob-tag soon">即將開放</span>
         </div>
       </div>
@@ -475,27 +448,28 @@ const RISK = {
   watch: { badge:'watch', badgeText:'需要觀察', title:'請留意狀況' },
   alert: { badge:'alert', badgeText:'立即關注', title:'需要確認' }
 };
-
 const SC_NAMES = {
   1:'夜間起床陪伴', 2:'早晨起床確認',
   3:'日間活動量監測', 4:'離開安全區域', 5:'每日健康報告'
 };
-
 const SC_SVG = {
   1:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   2:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-  3:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  3:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   4:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  5:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="10 9 9 9 8 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+  5:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
 };
-
 const BL = { low:'良好', watch:'觀察中', alert:'需關注', none:'待觸發' };
 
-async function sbGet(t, q='') {
-  const r = await fetch(`${SB_URL}/rest/v1/${t}?${q}`, {
+async function sbGet(t, q) {
+  const url = q ? `${SB_URL}/rest/v1/${t}?${q}` : `${SB_URL}/rest/v1/${t}`;
+  const r = await fetch(url, {
     headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
   });
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  if (!r.ok) {
+    const body = await r.text();
+    throw new Error(`HTTP ${r.status}: ${body}`);
+  }
   return r.json();
 }
 
@@ -512,23 +486,29 @@ function ago(iso) {
   if (m < 60) return `${m} 分鐘前`;
   return `${Math.floor(m/60)} 小時前`;
 }
-function todayTW() {
-  return new Date().toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(0, 10);
+
+// 台灣今天 00:00:00 的 UTC ISO string（避免 + 號在 URL 裡的問題）
+function todayStartISO() {
+  const tw = new Date().toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(0, 10);
+  return new Date(tw + 'T00:00:00+08:00').toISOString();
+}
+function yesterdayISO() {
+  const tw = new Date(Date.now() - 864e5).toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(0, 10);
+  return new Date(tw + 'T00:00:00+08:00').toISOString();
 }
 
 async function loadAll() {
   try {
-    const today = todayTW();
+    const todayStart = todayStartISO();
 
-    // ── Latest decision
+    // Latest decision
     const ds = await sbGet('ai_decisions', `user_id=eq.${UID}&order=created_at.desc&limit=1`);
     const d = ds[0];
     const rk = d?.risk_level || 'low';
     const ri = RISK[rk];
 
     document.getElementById('hero-gradient').className = `hero-gradient ${rk}`;
-    const badge = document.getElementById('hero-badge');
-    badge.className = `hero-badge ${rk}`;
+    document.getElementById('hero-badge').className = `hero-badge ${rk}`;
     document.getElementById('badge-text').textContent = ri.badgeText;
     document.getElementById('hero-title').textContent = d ? ri.title : '連接中';
     document.getElementById('hero-reason').textContent = d?.ai_reasoning || '正在連接系統，請稍候...';
@@ -541,9 +521,9 @@ async function loadAll() {
       aib.textContent = d.ai_source === 'claude_fallback' ? 'Claude' : 'DeepSeek';
     }
 
-    // ── Sensor events
+    // Sensor events today
     const evs = await sbGet('sensor_events',
-      `user_id=eq.${UID}&triggered_at=gte.${today}T00:00:00&order=triggered_at.desc`
+      `user_id=eq.${UID}&triggered_at=gte.${todayStart}&order=triggered_at.desc`
     );
     const cnt = evs.length;
 
@@ -552,10 +532,9 @@ async function loadAll() {
     mEl.className = `stat-number${cnt > 0 ? ' active' : ''}`;
     document.getElementById('bar-motion').className = `stat-tile-bar${cnt > 0 ? ' active' : ''}`;
 
-    const lEl = document.getElementById('s-last');
     if (evs[0]) {
-      lEl.textContent = twTime(evs[0].triggered_at);
-      lEl.className = 'stat-number active';
+      document.getElementById('s-last').textContent = twTime(evs[0].triggered_at);
+      document.getElementById('s-last').className = 'stat-number active';
       document.getElementById('bar-last').className = 'stat-tile-bar active';
     }
 
@@ -564,30 +543,27 @@ async function loadAll() {
         .toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(11, 13));
       return h >= 5 && h <= 11;
     });
-    const wEl = document.getElementById('s-wake');
     if (wk) {
-      wEl.textContent = twTime(wk.triggered_at);
-      wEl.className = 'stat-number active';
+      document.getElementById('s-wake').textContent = twTime(wk.triggered_at);
+      document.getElementById('s-wake').className = 'stat-number active';
       document.getElementById('bar-wake').className = 'stat-tile-bar active';
     }
 
-    // ── Scenarios
+    // Scenarios today
     const allD = await sbGet('ai_decisions',
-      `user_id=eq.${UID}&created_at=gte.${today}T00:00:00+08:00&order=created_at.desc`
+      `user_id=eq.${UID}&created_at=gte.${todayStart}&order=created_at.desc`
     );
     const byS = {};
     allD.forEach(x => { if (!byS[x.scenario]) byS[x.scenario] = x; });
 
     document.getElementById('sc-list').innerHTML = [1, 2, 3, 4, 5].map(i => {
-      const name = SC_NAMES[i];
-      const icon = SC_SVG[i];
       const dd = byS[i];
       const srk = dd?.risk_level || 'none';
       const iconColor = srk === 'low' ? 'var(--good)' : srk === 'watch' ? 'var(--warn)' : srk === 'alert' ? 'var(--danger)' : 'var(--ink3)';
       return `<div class="sc-item">
-        <div class="sc-icon-box ${srk}" style="color:${iconColor}">${icon}</div>
+        <div class="sc-icon-box ${srk}" style="color:${iconColor}">${SC_SVG[i]}</div>
         <div class="sc-text">
-          <div class="sc-name">${name}</div>
+          <div class="sc-name">${SC_NAMES[i]}</div>
           <div class="sc-desc">${dd?.ai_reasoning || '等待感測器觸發'}</div>
         </div>
         <div class="sc-right">
@@ -600,10 +576,11 @@ async function loadAll() {
       </div>`;
     }).join('');
 
-    // ── Report
-    const yest = new Date(Date.now() - 864e5)
+    // Report
+    const yesterdayStart = yesterdayISO();
+    const yesterdayStr = new Date(Date.now() - 864e5)
       .toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(0, 10);
-    const reps = await sbGet('daily_reports', `user_id=eq.${UID}&report_date=eq.${yest}`);
+    const reps = await sbGet('daily_reports', `user_id=eq.${UID}&report_date=eq.${yesterdayStr}`);
     if (reps[0]) {
       document.getElementById('report-sub').textContent =
         reps[0].risk_summary === 'normal' ? '昨日一切正常，點此查看' : '昨日有需關注項目，點此查看';
@@ -612,11 +589,10 @@ async function loadAll() {
   } catch (e) {
     console.error('loadAll error:', e);
     document.getElementById('sc-list').innerHTML =
-      '<div style="padding:24px;text-align:center;color:var(--ink3);font-size:13px">資料載入失敗，請重新整理</div>';
+      `<div style="padding:24px;text-align:center;color:var(--ink3);font-size:13px">資料載入失敗<br><span style="font-size:11px;color:var(--ink4)">${e.message}</span></div>`;
   }
 }
 
-// ── Onboarding
 function openOnboarding()  { document.getElementById('ob-overlay').classList.add('open'); }
 function closeOnboarding() {
   document.getElementById('ob-overlay').classList.remove('open');
@@ -625,12 +601,10 @@ function closeOnboarding() {
 function checkOnboarding() {
   if (!localStorage.getItem(OB_KEY)) openOnboarding();
 }
-
 document.getElementById('ob-overlay').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeOnboarding();
 });
 
-// ── Settings
 async function loadSettings() {
   try {
     const data = await sbGet('user_settings', `user_id=eq.${UID}&limit=1`);
@@ -646,7 +620,6 @@ async function loadSettings() {
 
 function openSettings()  { loadSettings(); document.getElementById('modal-bg').classList.add('open'); }
 function closeSettings() { document.getElementById('modal-bg').classList.remove('open'); }
-
 document.getElementById('modal-bg').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeSettings();
 });
