@@ -543,7 +543,7 @@ async function loadAll() {
 
     // ── Sensor events
     const evs = await sbGet('sensor_events',
-      `user_id=eq.${UID}&triggered_at=gte.${today}T00:00:00+08:00&order=triggered_at.desc`
+      `user_id=eq.${UID}&triggered_at=gte.${today}T00:00:00&order=triggered_at.desc`
     );
     const cnt = evs.length;
 
