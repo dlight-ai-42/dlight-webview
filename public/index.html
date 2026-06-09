@@ -5,661 +5,517 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>小路光 Dlight</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="config.js"></script>
 <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg:        #F0F2F5;
-  --white:     #FFFFFF;
-  --ink1:      #0F1621;
-  --ink2:      #4A5568;
-  --ink3:      #9AA5B4;
-  --ink4:      #CBD5E0;
-  --border:    rgba(0,0,0,0.07);
-  --good:      #00B894;
-  --good-lt:   #E6FAF6;
-  --warn:      #F6A623;
-  --warn-lt:   #FEF6E6;
-  --danger:    #E53E3E;
-  --danger-lt: #FDE8E8;
-  --purple:    #6C63FF;
-  --purple-lt: #EFEDFF;
-  --card-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 0 1px rgba(0,0,0,0.06);
-  --card-shadow-lg: 0 8px 32px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
-  --r: 22px; --r-md: 16px; --r-sm: 12px;
+  --bg:       #FAFAFA;
+  --surface:  #FFFFFF;
+  --border:   #E5E7EB;
+  --border-2: #F3F4F6;
+  --t1: #111827;
+  --t2: #6B7280;
+  --t3: #9CA3AF;
+  --t4: #D1D5DB;
+  --green:   #16A34A;
+  --green-bg:#F0FDF4;
+  --amber:   #D97706;
+  --amber-bg:#FFFBEB;
+  --red:     #DC2626;
+  --red-bg:  #FEF2F2;
+  --blue:    #2563EB;
+  --blue-bg: #EFF6FF;
 }
-* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html { -webkit-font-smoothing: antialiased; }
 body {
-  font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
-  background: var(--bg); color: var(--ink1);
-  min-height: 100vh; padding-bottom: 100px;
-  -webkit-font-smoothing: antialiased;
+  font-family: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+  background: var(--bg); color: var(--t1);
+  min-height: 100vh; padding-bottom: 96px;
+  font-size: 14px; line-height: 1.5;
 }
-.navbar { display:flex; align-items:center; justify-content:space-between; padding:54px 24px 0; }
-.brand { display:flex; align-items:center; gap:10px; }
-.brand-mark {
-  width:38px; height:38px; border-radius:12px;
-  background:linear-gradient(145deg,#7B74FF 0%,#4F46E5 100%);
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 12px rgba(108,99,255,0.35);
-}
-.brand-name { font-size:17px; font-weight:800; letter-spacing:-0.5px; }
-.brand-sub  { font-size:10px; color:var(--ink3); font-weight:400; margin-top:-1px; letter-spacing:0.3px; }
-.live-chip {
-  display:flex; align-items:center; gap:5px;
-  background:var(--white); border:1px solid var(--border);
-  border-radius:20px; padding:5px 11px;
-  font-size:11px; font-weight:600; color:var(--good);
-  box-shadow:var(--card-shadow);
-}
-.live-dot { width:5px; height:5px; border-radius:50%; background:var(--good); animation:lp 2.5s ease-in-out infinite; }
-@keyframes lp { 0%,100%{opacity:1} 50%{opacity:0.2} }
-.hero {
-  margin:18px 20px 0; background:var(--white); border-radius:var(--r);
-  box-shadow:var(--card-shadow-lg); overflow:hidden; position:relative;
-}
-.hero-gradient { position:absolute; inset:0; pointer-events:none; opacity:0.5; transition:background 0.5s; }
-.hero-gradient.low   { background:radial-gradient(ellipse at top right,rgba(0,184,148,0.15),transparent 65%); }
-.hero-gradient.watch { background:radial-gradient(ellipse at top right,rgba(246,166,35,0.15),transparent 65%); }
-.hero-gradient.alert { background:radial-gradient(ellipse at top right,rgba(229,62,62,0.18),transparent 65%); }
-.hero-inner { padding:26px 26px 22px; position:relative; }
-.hero-badge {
-  display:inline-flex; align-items:center; gap:6px;
-  padding:5px 13px; border-radius:20px;
-  font-size:11px; font-weight:700; letter-spacing:0.5px;
-  text-transform:uppercase; margin-bottom:18px; transition:all 0.4s;
-}
-.hero-badge.low   { background:var(--good-lt);   color:var(--good); }
-.hero-badge.watch { background:var(--warn-lt);   color:var(--warn); }
-.hero-badge.alert { background:var(--danger-lt); color:var(--danger); }
-.badge-dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
-.hero-big-title { font-size:36px; font-weight:800; letter-spacing:-1.2px; line-height:1.1; color:var(--ink1); margin-bottom:10px; }
-.hero-reason { font-size:14px; color:var(--ink2); line-height:1.65; font-weight:400; margin-bottom:20px; }
-.hero-divider { height:1px; background:var(--border); margin:0 -26px 16px; }
-.hero-meta { display:flex; align-items:center; gap:10px; }
-.ai-badge { font-size:10px; font-weight:700; padding:3px 9px; border-radius:6px; letter-spacing:0.4px; text-transform:uppercase; }
-.ai-badge.ds { background:#EBF5FF; color:#2B6CB0; }
-.ai-badge.cl { background:var(--warn-lt); color:#B7651A; }
-.hero-ts { font-size:11px; color:var(--ink3); font-weight:400; }
-.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:12px 20px 0; }
-.stat-tile { background:var(--white); border-radius:var(--r-md); box-shadow:var(--card-shadow); padding:16px 14px 14px; position:relative; overflow:hidden; }
-.stat-tile-bar { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--purple),rgba(108,99,255,0.1)); transition:background 0.4s; }
-.stat-tile-bar.active { background:linear-gradient(90deg,var(--good),rgba(0,184,148,0.1)); }
-.stat-label-top { font-size:10px; font-weight:600; color:var(--ink3); letter-spacing:0.3px; text-transform:uppercase; margin-bottom:8px; }
-.stat-number { font-size:27px; font-weight:800; letter-spacing:-1px; color:var(--ink1); line-height:1; transition:color 0.3s; }
-.stat-number.active { color:var(--good); }
-.stat-unit { font-size:10px; color:var(--ink3); margin-top:5px; font-weight:500; }
-.section { padding:0 20px; margin-top:28px; }
-.section-title { font-size:12px; font-weight:700; color:var(--ink3); letter-spacing:0.8px; text-transform:uppercase; margin-bottom:12px; }
-.sc-wrap { background:var(--white); border-radius:var(--r); box-shadow:var(--card-shadow); overflow:hidden; }
-.sc-item { display:flex; align-items:center; padding:15px 18px; gap:14px; border-bottom:1px solid var(--border); transition:background 0.15s; }
-.sc-item:last-child { border-bottom:none; }
-.sc-item:active { background:#FAFBFC; }
-.sc-icon-box { width:40px; height:40px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:background 0.3s; }
-.sc-icon-box.low   { background:var(--good-lt); }
-.sc-icon-box.watch { background:var(--warn-lt); }
-.sc-icon-box.alert { background:var(--danger-lt); }
-.sc-icon-box.none  { background:var(--bg); }
-.sc-text { flex:1; min-width:0; }
-.sc-name { font-size:14px; font-weight:600; color:var(--ink1); }
-.sc-desc { font-size:12px; color:var(--ink3); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:400; line-height:1.4; }
-.sc-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
-.sc-pill { font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; }
-.sc-pill.low   { background:var(--good-lt);   color:var(--good); }
-.sc-pill.watch { background:var(--warn-lt);   color:var(--warn); }
-.sc-pill.alert { background:var(--danger-lt); color:var(--danger); }
-.sc-pill.none  { background:var(--bg);        color:var(--ink3); }
-.sc-time { font-size:10px; color:var(--ink4); font-weight:400; }
-.report-card {
-  display:flex; align-items:center; gap:16px;
-  background:var(--white); border-radius:var(--r); box-shadow:var(--card-shadow);
-  padding:18px 20px; text-decoration:none; color:inherit; transition:box-shadow 0.2s;
-}
-.report-card:active { box-shadow:var(--card-shadow-lg); }
-.report-icon-box {
-  width:50px; height:50px; border-radius:15px; flex-shrink:0;
-  background:linear-gradient(145deg,#7B74FF 0%,#4F46E5 100%);
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 14px rgba(108,99,255,0.3);
-}
-.report-text { flex:1; }
-.report-title-txt { font-size:15px; font-weight:700; color:var(--ink1); }
-.report-sub-txt { font-size:12px; color:var(--ink3); margin-top:3px; font-weight:400; }
-.settings-card { background:var(--white); border-radius:var(--r); box-shadow:var(--card-shadow); overflow:hidden; }
-.settings-row { display:flex; align-items:center; padding:16px 20px; gap:14px; border:none; background:none; width:100%; cursor:pointer; text-align:left; transition:background 0.15s; font-family:inherit; }
-.settings-row:active { background:#FAFBFC; }
-.settings-row + .settings-row { border-top:1px solid var(--border); }
-.settings-icon-box { width:40px; height:40px; border-radius:12px; flex-shrink:0; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; }
-.settings-label { font-size:14px; font-weight:600; color:var(--ink1); flex:1; }
-.ob-overlay { display:none; position:fixed; inset:0; z-index:200; background:rgba(15,22,33,0.6); backdrop-filter:blur(8px); align-items:flex-end; }
+.nav { display:flex; align-items:center; justify-content:space-between; padding:56px 20px 0; }
+.logo { display:flex; align-items:center; gap:9px; }
+.logo-icon { width:32px; height:32px; background:var(--t1); border-radius:8px; display:flex; align-items:center; justify-content:center; }
+.logo-name { font-size:15px; font-weight:600; letter-spacing:-0.2px; }
+.logo-sub  { font-size:11px; color:var(--t3); margin-top:-1px; }
+.status-dot { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:500; color:var(--t2); }
+.dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.hero { margin:16px 20px 0; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px; }
+.hero-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; }
+.status-tag { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; padding:3px 8px; border-radius:20px; letter-spacing:0.2px; }
+.status-tag.low   { background:var(--green-bg); color:var(--green); }
+.status-tag.watch { background:var(--amber-bg); color:var(--amber); }
+.status-tag.alert { background:var(--red-bg);   color:var(--red);   }
+.tag-dot { width:5px; height:5px; border-radius:50%; background:currentColor; }
+.hero-time { font-size:11px; color:var(--t3); }
+.hero-title { font-size:24px; font-weight:600; letter-spacing:-0.5px; line-height:1.2; color:var(--t1); margin-bottom:6px; }
+.hero-body  { font-size:13px; color:var(--t2); line-height:1.6; margin-bottom:16px; }
+.hero-footer { display:flex; align-items:center; gap:8px; padding-top:14px; border-top:1px solid var(--border-2); }
+.ai-tag { font-size:10px; font-weight:600; padding:2px 7px; border-radius:4px; letter-spacing:0.3px; font-family:'SF Mono','Fira Code',monospace; }
+.ai-tag.ds { background:var(--blue-bg); color:var(--blue); }
+.ai-tag.cl { background:var(--amber-bg); color:var(--amber); }
+.hero-ago { font-size:11px; color:var(--t3); }
+
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:10px 20px 0; }
+.stat { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 12px; }
+.stat-val { font-size:22px; font-weight:600; letter-spacing:-0.5px; color:var(--t1); line-height:1; margin-bottom:4px; }
+.stat-val.lit { color:var(--green); }
+.stat-lbl { font-size:10px; color:var(--t3); font-weight:500; text-transform:uppercase; letter-spacing:0.4px; }
+
+.sec { padding:0 20px; margin-top:24px; }
+.sec-hd { font-size:11px; font-weight:600; color:var(--t3); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px; }
+
+.sc-list { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.sc-row { display:flex; align-items:center; padding:13px 16px; gap:12px; border-bottom:1px solid var(--border-2); }
+.sc-row:last-child { border-bottom:none; }
+.sc-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.sc-icon.low   { background:var(--green-bg); color:var(--green); }
+.sc-icon.watch { background:var(--amber-bg); color:var(--amber); }
+.sc-icon.alert { background:var(--red-bg);   color:var(--red);   }
+.sc-icon.none  { background:var(--bg);       color:var(--t3);    }
+.sc-info { flex:1; min-width:0; }
+.sc-name { font-size:13px; font-weight:500; color:var(--t1); }
+.sc-desc { font-size:11px; color:var(--t3); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sc-right { text-align:right; flex-shrink:0; }
+.sc-badge { font-size:11px; font-weight:500; color:var(--t2); display:block; }
+.sc-badge.low   { color:var(--green); }
+.sc-badge.watch { color:var(--amber); }
+.sc-badge.alert { color:var(--red);   }
+.sc-t { font-size:10px; color:var(--t4); margin-top:2px; display:block; }
+
+.report-link { display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; text-decoration:none; color:inherit; }
+.report-link:active { background:var(--bg); }
+.report-link-icon { width:36px; height:36px; background:var(--t1); border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.report-link-text { flex:1; }
+.report-link-title { font-size:13px; font-weight:500; }
+.report-link-sub   { font-size:11px; color:var(--t3); margin-top:1px; }
+
+.settings-list { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.settings-btn { display:flex; align-items:center; width:100%; padding:13px 16px; gap:12px; background:none; border:none; border-bottom:1px solid var(--border-2); cursor:pointer; font-family:inherit; text-align:left; color:var(--t1); }
+.settings-btn:last-child { border-bottom:none; }
+.settings-btn:active { background:var(--bg); }
+.settings-btn-icon { width:32px; height:32px; border-radius:8px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.settings-btn-label { font-size:13px; font-weight:500; flex:1; }
+
+.ob-overlay { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); align-items:flex-end; }
 .ob-overlay.open { display:flex; }
-.ob-sheet {
-  background:var(--white); width:100%; border-radius:28px 28px 0 0;
-  max-height:92vh; overflow-y:auto; padding-bottom:48px;
-  animation:sheetUp 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
-}
-@keyframes sheetUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.ob-handle { width:40px; height:4px; border-radius:2px; background:var(--ink4); margin:14px auto 0; }
-.ob-head { padding:24px 26px 0; }
-.ob-eyebrow { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--purple); margin-bottom:6px; }
-.ob-title { font-size:26px; font-weight:800; letter-spacing:-0.7px; color:var(--ink1); line-height:1.2; }
-.ob-sub { font-size:14px; color:var(--ink2); margin-top:8px; line-height:1.6; font-weight:400; }
-.ob-steps { padding:24px 26px 0; display:flex; flex-direction:column; }
-.ob-step { display:flex; gap:16px; padding-bottom:24px; position:relative; }
-.ob-step:not(:last-child)::after {
-  content:''; position:absolute; left:18px; top:40px; bottom:0; width:1.5px;
-  background:linear-gradient(to bottom,var(--ink4),transparent);
-}
-.ob-num {
-  width:38px; height:38px; border-radius:50%; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-  font-size:14px; font-weight:800; z-index:1;
-}
-.ob-num.done    { background:var(--good);   color:#fff; box-shadow:0 2px 8px rgba(0,184,148,0.4); }
-.ob-num.current { background:var(--purple); color:#fff; box-shadow:0 2px 8px rgba(108,99,255,0.4); }
-.ob-num.future  { background:var(--bg);     color:var(--ink3); border:2px solid var(--ink4); }
-.ob-body { flex:1; padding-top:8px; }
-.ob-step-title { font-size:15px; font-weight:700; color:var(--ink1); }
-.ob-step-desc  { font-size:13px; color:var(--ink2); margin-top:4px; line-height:1.6; font-weight:400; }
-.ob-tag { display:inline-flex; align-items:center; gap:4px; margin-top:8px; font-size:11px; font-weight:700; padding:4px 10px; border-radius:8px; }
-.ob-tag.done { background:var(--good-lt); color:var(--good); }
-.ob-tag.soon { background:var(--purple-lt); color:var(--purple); }
-.ob-cta {
-  margin:8px 26px 0; width:calc(100% - 52px);
-  background:linear-gradient(145deg,#7B74FF 0%,#4F46E5 100%);
-  color:#fff; font-size:16px; font-weight:700;
-  border:none; border-radius:16px; padding:16px;
-  cursor:pointer; font-family:inherit;
-  box-shadow:0 4px 20px rgba(108,99,255,0.4);
-  transition:opacity 0.2s, transform 0.15s; display:block;
-}
-.ob-cta:active { opacity:0.88; transform:scale(0.98); }
-.ob-skip { display:block; text-align:center; margin-top:14px; font-size:13px; color:var(--ink3); font-weight:500; cursor:pointer; padding:4px; }
-.modal-bg { display:none; position:fixed; inset:0; background:rgba(15,22,33,0.5); backdrop-filter:blur(6px); z-index:100; align-items:flex-end; }
+.ob-sheet { background:var(--surface); width:100%; border-radius:20px 20px 0 0; border:1px solid var(--border); border-bottom:none; max-height:90vh; overflow-y:auto; padding-bottom:48px; animation:up .3s ease both; }
+@keyframes up { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.ob-drag { width:36px; height:4px; background:var(--border); border-radius:2px; margin:12px auto 0; }
+.ob-hd { padding:20px 22px 0; }
+.ob-label { font-size:11px; font-weight:600; letter-spacing:.6px; text-transform:uppercase; color:var(--t3); margin-bottom:6px; }
+.ob-title { font-size:22px; font-weight:600; letter-spacing:-0.4px; line-height:1.25; }
+.ob-desc  { font-size:13px; color:var(--t2); margin-top:6px; line-height:1.6; }
+.ob-steps { padding:20px 22px 0; }
+.ob-step  { display:flex; gap:14px; padding-bottom:20px; position:relative; }
+.ob-step:not(:last-child)::after { content:''; position:absolute; left:15px; top:32px; bottom:0; width:1px; background:var(--border); }
+.ob-num { width:32px; height:32px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; z-index:1; border:1.5px solid var(--border); background:var(--surface); color:var(--t3); }
+.ob-num.done   { background:var(--t1); border-color:var(--t1); color:#fff; }
+.ob-num.active { background:var(--surface); border-color:var(--t1); color:var(--t1); }
+.ob-content { flex:1; padding-top:5px; }
+.ob-step-title { font-size:13px; font-weight:600; }
+.ob-step-desc  { font-size:12px; color:var(--t2); margin-top:3px; line-height:1.55; }
+.ob-step-tag { display:inline-block; margin-top:6px; font-size:10px; font-weight:600; padding:2px 8px; border-radius:4px; letter-spacing:0.2px; }
+.ob-step-tag.done { background:var(--green-bg); color:var(--green); }
+.ob-step-tag.soon { background:var(--bg); color:var(--t3); border:1px solid var(--border); }
+.ob-cta { display:block; margin:4px 22px 0; width:calc(100% - 44px); background:var(--t1); color:#fff; font-size:14px; font-weight:600; border:none; border-radius:10px; padding:13px; cursor:pointer; font-family:inherit; letter-spacing:-0.1px; }
+.ob-cta:active { opacity:.85; }
+.ob-skip { display:block; text-align:center; margin-top:12px; font-size:13px; color:var(--t3); cursor:pointer; padding:4px; }
+
+.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); backdrop-filter:blur(4px); z-index:100; align-items:flex-end; }
 .modal-bg.open { display:flex; }
-.modal-sheet { background:var(--white); width:100%; border-radius:28px 28px 0 0; max-height:92vh; overflow-y:auto; padding-bottom:48px; }
-.modal-handle { width:40px; height:4px; background:var(--ink4); border-radius:2px; margin:14px auto 0; }
-.modal-nav { display:flex; align-items:center; justify-content:space-between; padding:18px 24px 16px; border-bottom:1px solid var(--border); }
-.modal-nav-title { font-size:17px; font-weight:800; letter-spacing:-0.3px; }
-.modal-done-btn { font-size:14px; font-weight:700; color:var(--purple); background:none; border:none; cursor:pointer; font-family:inherit; padding:4px 8px; }
-.modal-grp { margin:18px 20px 0; background:var(--white); border:1px solid var(--border); border-radius:var(--r-md); overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
-.modal-grp-title { font-size:10px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--ink3); padding:10px 16px 2px; }
-.modal-field { display:flex; align-items:center; padding:13px 16px; border-bottom:1px solid var(--border); gap:10px; }
+.modal { background:var(--surface); width:100%; border-radius:20px 20px 0 0; border:1px solid var(--border); border-bottom:none; max-height:90vh; overflow-y:auto; padding-bottom:48px; }
+.modal-drag { width:36px; height:4px; background:var(--border); border-radius:2px; margin:12px auto 0; }
+.modal-nav { display:flex; align-items:center; justify-content:space-between; padding:16px 20px 14px; border-bottom:1px solid var(--border-2); }
+.modal-title { font-size:15px; font-weight:600; letter-spacing:-0.2px; }
+.modal-close { font-size:13px; font-weight:600; color:var(--blue); background:none; border:none; cursor:pointer; font-family:inherit; padding:4px 6px; }
+.modal-group { margin:16px 20px 0; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+.modal-group-label { font-size:10px; font-weight:600; color:var(--t3); text-transform:uppercase; letter-spacing:0.6px; padding:10px 14px 2px; }
+.modal-field { display:flex; align-items:center; padding:11px 14px; gap:10px; border-bottom:1px solid var(--border-2); }
 .modal-field:last-child { border-bottom:none; }
-.field-label { font-size:14px; color:var(--ink2); width:84px; flex-shrink:0; font-weight:500; }
-.field-input { flex:1; font-size:14px; color:var(--ink1); font-weight:600; background:none; border:none; outline:none; text-align:right; font-family:inherit; }
-.field-input::placeholder { color:var(--ink4); font-weight:400; }
-.save-button {
-  display:block; margin:20px 20px 0; width:calc(100% - 40px);
-  background:linear-gradient(145deg,#7B74FF 0%,#4F46E5 100%);
-  color:#fff; font-size:15px; font-weight:700;
-  border:none; border-radius:14px; padding:15px;
-  cursor:pointer; font-family:inherit;
-  box-shadow:0 4px 16px rgba(108,99,255,0.35);
-  transition:opacity 0.2s, transform 0.15s;
-}
-.save-button:active { opacity:0.88; transform:scale(0.98); }
-.toast {
-  position:fixed; bottom:108px; left:50%;
-  transform:translateX(-50%) translateY(10px);
-  background:var(--ink1); color:#fff; padding:11px 22px; border-radius:22px;
-  font-size:13px; font-weight:600; z-index:300;
-  opacity:0; pointer-events:none; transition:opacity 0.25s, transform 0.25s;
-  white-space:nowrap; box-shadow:0 8px 28px rgba(0,0,0,0.2);
-}
+.field-lbl { font-size:13px; color:var(--t2); width:80px; flex-shrink:0; }
+.field-inp { flex:1; font-size:13px; color:var(--t1); font-weight:500; background:none; border:none; outline:none; text-align:right; font-family:inherit; }
+.field-inp::placeholder { color:var(--t4); font-weight:400; }
+.save-btn { display:block; margin:16px 20px 0; width:calc(100% - 40px); background:var(--t1); color:#fff; font-size:14px; font-weight:600; border:none; border-radius:10px; padding:13px; cursor:pointer; font-family:inherit; }
+.save-btn:active { opacity:.85; }
+
+.toast { position:fixed; bottom:96px; left:50%; transform:translateX(-50%) translateY(6px); background:var(--t1); color:#fff; padding:9px 18px; border-radius:20px; font-size:12px; font-weight:500; z-index:300; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s; white-space:nowrap; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-.fade { animation:fadeUp 0.5s ease both; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 </style>
 </head>
 <body>
 
-<div class="navbar">
-  <div class="brand">
-    <div class="brand-mark">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M12 2L9.5 8.5H3L8.5 12.5L6 19L12 15L18 19L15.5 12.5L21 8.5H14.5L12 2Z" fill="white" opacity="0.9"/>
+<div class="nav">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L9 9H2L8 14L6 21L12 17L18 21L16 14L22 9H15L12 2Z" fill="white"/>
       </svg>
     </div>
     <div>
-      <div class="brand-name">小路光</div>
-      <div class="brand-sub">Dlight AI Care</div>
+      <div class="logo-name">小路光</div>
+      <div class="logo-sub">Dlight AI Care</div>
     </div>
   </div>
-  <div class="live-chip"><div class="live-dot"></div>即時監測</div>
+  <div class="status-dot"><div class="dot"></div>即時監測</div>
 </div>
 
-<div style="padding:0 20px;margin-top:16px" class="fade">
-  <div class="hero">
-    <div class="hero-gradient low" id="hero-gradient"></div>
-    <div class="hero-inner">
-      <div class="hero-badge low" id="hero-badge">
-        <div class="badge-dot"></div>
-        <span id="badge-text">狀態良好</span>
-      </div>
-      <div class="hero-big-title" id="hero-title">載入中</div>
-      <div class="hero-reason" id="hero-reason">正在連接系統...</div>
-      <div class="hero-divider"></div>
-      <div class="hero-meta">
-        <span class="ai-badge ds" id="ai-badge" style="display:none"></span>
-        <span class="hero-ts" id="hero-ts"></span>
-      </div>
-    </div>
+<div class="hero">
+  <div class="hero-top">
+    <div class="status-tag low" id="hero-tag"><div class="tag-dot"></div><span id="tag-txt">狀態良好</span></div>
+    <div class="hero-time" id="hero-time"></div>
+  </div>
+  <div class="hero-title" id="hero-title">載入中</div>
+  <div class="hero-body"  id="hero-body">正在連接系統...</div>
+  <div class="hero-footer">
+    <span class="ai-tag ds" id="ai-tag" style="display:none"></span>
+    <span class="hero-ago" id="hero-ago"></span>
   </div>
 </div>
 
-<div class="stats fade" style="animation-delay:.08s">
-  <div class="stat-tile">
-    <div class="stat-tile-bar" id="bar-motion"></div>
-    <div class="stat-label-top">移動次數</div>
-    <div class="stat-number" id="s-motion">—</div>
-    <div class="stat-unit">今日偵測</div>
-  </div>
-  <div class="stat-tile">
-    <div class="stat-tile-bar" id="bar-last"></div>
-    <div class="stat-label-top">最後移動</div>
-    <div class="stat-number" id="s-last">—</div>
-    <div class="stat-unit">台灣時間</div>
-  </div>
-  <div class="stat-tile">
-    <div class="stat-tile-bar" id="bar-wake"></div>
-    <div class="stat-label-top">起床時間</div>
-    <div class="stat-number" id="s-wake">—</div>
-    <div class="stat-unit">今日首次</div>
+<div class="stats">
+  <div class="stat"><div class="stat-val" id="s-count">—</div><div class="stat-lbl">移動次數</div></div>
+  <div class="stat"><div class="stat-val" id="s-last">—</div><div class="stat-lbl">最後偵測</div></div>
+  <div class="stat"><div class="stat-val" id="s-wake">—</div><div class="stat-lbl">起床時間</div></div>
+</div>
+
+<div class="sec">
+  <div class="sec-hd">情境監測</div>
+  <div class="sc-list" id="sc-list">
+    <div style="padding:24px;text-align:center;color:var(--t3);font-size:12px">載入中...</div>
   </div>
 </div>
 
-<div class="section fade" style="animation-delay:.16s">
-  <div class="section-title">情境監測</div>
-  <div class="sc-wrap" id="sc-list">
-    <div style="padding:28px;text-align:center;color:var(--ink3);font-size:13px;font-weight:500">載入中...</div>
-  </div>
-</div>
-
-<div class="section fade" style="animation-delay:.22s">
-  <div class="section-title">健康報告</div>
-  <a class="report-card" href="report.html">
-    <div class="report-icon-box">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M9 12H15M9 16H15M17 21H7C5.9 21 5 20.1 5 19V5C5 3.9 5.9 3 7 3H13.5L19 8.5V19C19 20.1 18.1 21 17 21Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M13 3V9H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<div class="sec">
+  <div class="sec-hd">健康報告</div>
+  <a class="report-link" href="report.html">
+    <div class="report-link-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M9 12h6M9 16h6M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-    <div class="report-text">
-      <div class="report-title-txt">昨日健康報告</div>
-      <div class="report-sub-txt" id="report-sub">AI 自動生成，每日 08:00 更新</div>
+    <div class="report-link-text">
+      <div class="report-link-title">昨日健康報告</div>
+      <div class="report-link-sub" id="report-sub">AI 自動生成，每日 08:00 更新</div>
     </div>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-      <path d="M9 18L15 12L9 6" stroke="var(--ink4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="var(--t4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
 </div>
 
-<div class="section fade" style="animation-delay:.28s">
-  <div class="section-title">設定</div>
-  <div class="settings-card">
-    <button class="settings-row" onclick="openSettings()">
-      <div class="settings-icon-box">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="3" stroke="var(--ink2)" stroke-width="2"/>
-          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="var(--ink2)" stroke-width="2"/>
+<div class="sec">
+  <div class="sec-hd">設定</div>
+  <div class="settings-list">
+    <button class="settings-btn" onclick="openSettings()">
+      <div class="settings-btn-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="3" stroke="var(--t2)" stroke-width="1.8"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="var(--t2)" stroke-width="1.8"/>
         </svg>
       </div>
-      <div class="settings-label">作息基本設定</div>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-        <path d="M9 18L15 12L9 6" stroke="var(--ink4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <div class="settings-btn-label">作息基本設定</div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="var(--t4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <button class="settings-row" onclick="openOnboarding()">
-      <div class="settings-icon-box">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" stroke="var(--ink2)" stroke-width="2"/>
-          <path d="M12 8v4M12 16h.01" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round"/>
+    <button class="settings-btn" onclick="openOnboarding()">
+      <div class="settings-btn-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="var(--t2)" stroke-width="1.8"/>
+          <path d="M12 8v4M12 16h.01" stroke="var(--t2)" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
       </div>
-      <div class="settings-label">安裝引導 SOP</div>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-        <path d="M9 18L15 12L9 6" stroke="var(--ink4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <div class="settings-btn-label">安裝引導 SOP</div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="var(--t4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
 </div>
 
 <!-- ONBOARDING -->
-<div class="ob-overlay" id="ob-overlay">
+<div class="ob-overlay" id="ob">
   <div class="ob-sheet">
-    <div class="ob-handle"></div>
-    <div class="ob-head">
-      <div class="ob-eyebrow">快速引導</div>
-      <div class="ob-title">歡迎使用<br>小路光 Dlight</div>
-      <div class="ob-sub">請完成以下設定步驟，讓 AI 開始守護您的家人。</div>
+    <div class="ob-drag"></div>
+    <div class="ob-hd">
+      <div class="ob-label">快速引導</div>
+      <div class="ob-title">歡迎使用小路光</div>
+      <div class="ob-desc">完成以下步驟，讓系統開始守護您的家人。</div>
     </div>
     <div class="ob-steps">
       <div class="ob-step">
-        <div class="ob-num done">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="ob-body">
+        <div class="ob-num done"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ob-content">
           <div class="ob-step-title">安裝 Aqara Hub M2</div>
-          <div class="ob-step-desc">插上電源，等待 LED 藍燈常亮。建議放在家中 WiFi 訊號穩定的地方。</div>
-          <span class="ob-tag done">已完成</span>
+          <div class="ob-step-desc">插上電源，LED 藍燈常亮即就緒。放在 WiFi 訊號穩定的地方。</div>
+          <span class="ob-step-tag done">已完成</span>
         </div>
       </div>
       <div class="ob-step">
-        <div class="ob-num done">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="ob-body">
+        <div class="ob-num done"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ob-content">
           <div class="ob-step-title">安裝人體感應器（PIR）</div>
-          <div class="ob-step-desc">裝於走廊或臥室門口，高度 1.5–2m，確保涵蓋長輩的日常動線。</div>
-          <span class="ob-tag done">已完成</span>
+          <div class="ob-step-desc">裝於走廊或臥室門口，高度 1.5–2m，涵蓋長輩日常動線。</div>
+          <span class="ob-step-tag done">已完成</span>
         </div>
       </div>
       <div class="ob-step">
-        <div class="ob-num done">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="ob-body">
+        <div class="ob-num done"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ob-content">
           <div class="ob-step-title">配對 Aqara Home App</div>
-          <div class="ob-step-desc">App Store 搜尋「Aqara Home」，依 App 指引完成 Hub 與感應器配對，確保設備上線。</div>
-          <span class="ob-tag done">已完成</span>
+          <div class="ob-step-desc">App Store 搜尋「Aqara Home」，完成 Hub 與感應器配對。</div>
+          <span class="ob-step-tag done">已完成</span>
         </div>
       </div>
       <div class="ob-step">
-        <div class="ob-num done">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="ob-body">
+        <div class="ob-num done"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ob-content">
           <div class="ob-step-title">填寫長輩作息資料</div>
-          <div class="ob-step-desc">點選主頁「作息基本設定」，輸入起床時間、午休時段。AI 將依此個人化分析判斷標準。</div>
-          <span class="ob-tag done">已完成</span>
+          <div class="ob-step-desc">點選「作息基本設定」，輸入起床時間與午休時段。</div>
+          <span class="ob-step-tag done">已完成</span>
         </div>
       </div>
       <div class="ob-step">
-        <div class="ob-num current">5</div>
-        <div class="ob-body">
+        <div class="ob-num active">5</div>
+        <div class="ob-content">
           <div class="ob-step-title">綁定 LINE 家屬通知</div>
-          <div class="ob-step-desc">掃描下方 QR Code 完成 LINE 綁定，當 AI 判斷需關注時自動推播通知給指定家屬。</div>
-          <!-- TODO: 串接 LINE Messaging API，n8n notify_family=true 時觸發推播，此處顯示 QR Code -->
-          <span class="ob-tag soon">即將開放</span>
+          <div class="ob-step-desc">掃描 QR Code 完成綁定，異常時自動推播通知。</div>
+          <!-- TODO: 串接 LINE Messaging API，notify_family=true 時由 n8n 觸發推播，此處顯示綁定 QR Code -->
+          <span class="ob-step-tag soon">即將開放</span>
         </div>
       </div>
     </div>
-    <button class="ob-cta" onclick="closeOnboarding()">我知道了，開始使用</button>
-    <div class="ob-skip" onclick="closeOnboarding()">略過引導</div>
+    <button class="ob-cta" onclick="closeOb()">開始使用</button>
+    <div class="ob-skip" onclick="closeOb()">略過</div>
   </div>
 </div>
 
 <!-- SETTINGS MODAL -->
-<div class="modal-bg" id="modal-bg">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-drag"></div>
     <div class="modal-nav">
-      <div class="modal-nav-title">作息基本設定</div>
-      <button class="modal-done-btn" onclick="closeSettings()">完成</button>
+      <div class="modal-title">作息基本設定</div>
+      <button class="modal-close" onclick="closeSettings()">完成</button>
     </div>
-    <div class="modal-grp">
-      <div class="modal-grp-title">基本資料</div>
-      <div class="modal-field">
-        <div class="field-label">長輩稱呼</div>
-        <input class="field-input" type="text" id="f-name" placeholder="爸爸">
-      </div>
+    <div class="modal-group">
+      <div class="modal-group-label">基本資料</div>
+      <div class="modal-field"><div class="field-lbl">長輩稱呼</div><input class="field-inp" type="text" id="f-name" placeholder="爸爸"></div>
     </div>
-    <div class="modal-grp">
-      <div class="modal-grp-title">作息時間</div>
-      <div class="modal-field">
-        <div class="field-label">平常起床</div>
-        <input class="field-input" type="time" id="f-wakeup">
-      </div>
-      <div class="modal-field">
-        <div class="field-label">午休開始</div>
-        <input class="field-input" type="time" id="f-nap-start">
-      </div>
-      <div class="modal-field">
-        <div class="field-label">午休時長</div>
-        <input class="field-input" type="number" id="f-nap-dur" placeholder="分鐘（如 90）">
-      </div>
+    <div class="modal-group">
+      <div class="modal-group-label">作息時間</div>
+      <div class="modal-field"><div class="field-lbl">平常起床</div><input class="field-inp" type="time" id="f-wakeup"></div>
+      <div class="modal-field"><div class="field-lbl">午休開始</div><input class="field-inp" type="time" id="f-nap"></div>
+      <div class="modal-field"><div class="field-lbl">午休時長</div><input class="field-inp" type="number" id="f-napdur" placeholder="分鐘"></div>
     </div>
-    <div class="modal-grp">
-      <div class="modal-grp-title">外出習慣</div>
-      <div class="modal-field">
-        <div class="field-label">外出開始</div>
-        <input class="field-input" type="time" id="f-out-start">
-      </div>
-      <div class="modal-field">
-        <div class="field-label">外出結束</div>
-        <input class="field-input" type="time" id="f-out-end">
-      </div>
+    <div class="modal-group">
+      <div class="modal-group-label">外出習慣</div>
+      <div class="modal-field"><div class="field-lbl">外出開始</div><input class="field-inp" type="time" id="f-outstart"></div>
+      <div class="modal-field"><div class="field-lbl">外出結束</div><input class="field-inp" type="time" id="f-outend"></div>
     </div>
-    <button class="save-button" onclick="saveSettings()">儲存設定</button>
+    <button class="save-btn" onclick="saveSettings()">儲存</button>
   </div>
 </div>
 
-<div class="toast" id="toast">設定已儲存</div>
+<div class="toast" id="toast">已儲存</div>
 
 <script>
-const SB_URL = DLIGHT_CONFIG.SUPABASE_URL;
-const SB_KEY = DLIGHT_CONFIG.SUPABASE_ANON_KEY;
-const UID    = new URLSearchParams(location.search).get('uid') || 1;
-const OB_KEY = 'dlight_onboarded_' + UID;
+const SB  = DLIGHT_CONFIG.SUPABASE_URL;
+const KEY = DLIGHT_CONFIG.SUPABASE_ANON_KEY;
+const UID = new URLSearchParams(location.search).get('uid') || 1;
+const OBK = 'dlight_ob_' + UID;
 
 const RISK = {
-  low:   { badge:'low',   badgeText:'狀態良好', title:'一切正常' },
-  watch: { badge:'watch', badgeText:'需要觀察', title:'請留意狀況' },
-  alert: { badge:'alert', badgeText:'立即關注', title:'需要確認' }
+  low:   { cls:'low',   label:'狀態良好', title:'一切正常'   },
+  watch: { cls:'watch', label:'需要觀察', title:'請留意狀況' },
+  alert: { cls:'alert', label:'立即關注', title:'需要確認'   }
 };
-const SC_NAMES = {
-  1:'夜間起床陪伴', 2:'早晨起床確認',
-  3:'日間活動量監測', 4:'離開安全區域', 5:'每日健康報告'
-};
-const SC_SVG = {
-  1:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  2:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-  3:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  4:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  5:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+const SCNAME = { 1:'夜間起床陪伴', 2:'早晨起床確認', 3:'日間活動量監測', 4:'離開安全區域', 5:'每日健康報告' };
+const SCSVG = {
+  1:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  2:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  3:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  4:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  5:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'
 };
 const BL = { low:'良好', watch:'觀察中', alert:'需關注', none:'待觸發' };
 
-async function sbGet(t, q) {
-  const url = q ? `${SB_URL}/rest/v1/${t}?${q}` : `${SB_URL}/rest/v1/${t}`;
-  const r = await fetch(url, {
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+async function get(t, q) {
+  const r = await fetch(`${SB}/rest/v1/${t}${q ? '?' + q : ''}`, {
+    headers: { apikey: KEY, Authorization: `Bearer ${KEY}` }
   });
-  if (!r.ok) {
-    const body = await r.text();
-    throw new Error(`HTTP ${r.status}: ${body}`);
-  }
+  if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
   return r.json();
 }
 
-function twTime(iso) {
+function fmt(iso) {
   if (!iso) return '—';
-  return new Date(iso).toLocaleTimeString('zh-TW', {
-    hour:'2-digit', minute:'2-digit', timeZone:'Asia/Taipei', hour12:false
-  });
+  return new Date(iso).toLocaleTimeString('zh-TW', { hour:'2-digit', minute:'2-digit', timeZone:'Asia/Taipei', hour12:false });
 }
-function ago(iso) {
+function rel(iso) {
   if (!iso) return '';
   const m = Math.floor((Date.now() - new Date(iso)) / 60000);
-  if (m < 1) return '剛剛';
-  if (m < 60) return `${m} 分鐘前`;
-  return `${Math.floor(m/60)} 小時前`;
+  if (m < 1) return '剛剛'; if (m < 60) return m + ' 分鐘前';
+  return Math.floor(m / 60) + ' 小時前';
+}
+function todayISO() {
+  const d = new Date().toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(0, 10);
+  return new Date(d + 'T00:00:00+08:00').toISOString();
+}
+function yestStr() {
+  return new Date(Date.now() - 864e5).toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(0, 10);
+}
+function twHour() {
+  return parseInt(new Date().toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(11, 13));
 }
 
-// 台灣今天 00:00:00 的 UTC ISO string（避免 + 號在 URL 裡的問題）
-function todayStartISO() {
-  const tw = new Date().toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(0, 10);
-  return new Date(tw + 'T00:00:00+08:00').toISOString();
-}
-function yesterdayISO() {
-  const tw = new Date(Date.now() - 864e5).toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(0, 10);
-  return new Date(tw + 'T00:00:00+08:00').toISOString();
-}
-
-async function loadAll() {
+async function load() {
   try {
-    const todayStart = todayStartISO();
+    const t0 = todayISO();
 
-    // Latest decision
-    const ds = await sbGet('ai_decisions', `user_id=eq.${UID}&order=created_at.desc&limit=1`);
-    const d = ds[0];
-    const rk = d?.risk_level || 'low';
-    const ri = RISK[rk];
-
-    document.getElementById('hero-gradient').className = `hero-gradient ${rk}`;
-    document.getElementById('hero-badge').className = `hero-badge ${rk}`;
-    document.getElementById('badge-text').textContent = ri.badgeText;
+    // ── Latest AI decision
+    const ds = await get('ai_decisions', `user_id=eq.${UID}&order=created_at.desc&limit=1`);
+    const d = ds[0]; const rk = d?.risk_level || 'low'; const ri = RISK[rk];
+    document.getElementById('hero-tag').className = `status-tag ${ri.cls}`;
+    document.getElementById('tag-txt').textContent   = ri.label;
     document.getElementById('hero-title').textContent = d ? ri.title : '連接中';
-    document.getElementById('hero-reason').textContent = d?.ai_reasoning || '正在連接系統，請稍候...';
-    document.getElementById('hero-ts').textContent = d ? ago(d.created_at) : '';
-
-    const aib = document.getElementById('ai-badge');
+    document.getElementById('hero-body').textContent  = d?.ai_reasoning || '正在連接系統...';
+    document.getElementById('hero-time').textContent  = d ? rel(d.created_at) : '';
+    const at = document.getElementById('ai-tag');
     if (d?.ai_source) {
-      aib.style.display = 'inline-block';
-      aib.className = `ai-badge ${d.ai_source === 'claude_fallback' ? 'cl' : 'ds'}`;
-      aib.textContent = d.ai_source === 'claude_fallback' ? 'Claude' : 'DeepSeek';
+      at.style.display = 'inline-block';
+      at.className = `ai-tag ${d.ai_source === 'claude_fallback' ? 'cl' : 'ds'}`;
+      at.textContent = d.ai_source === 'claude_fallback' ? 'Claude' : 'DeepSeek';
     }
 
-    // Sensor events today
-    const evs = await sbGet('sensor_events',
-      `user_id=eq.${UID}&triggered_at=gte.${todayStart}&order=triggered_at.desc`
-    );
-    const cnt = evs.length;
+    // ── Sensor events today
+    const evs = await get('sensor_events', `user_id=eq.${UID}&triggered_at=gte.${t0}&order=triggered_at.desc`);
+    const n = evs.length;
+    const cEl = document.getElementById('s-count');
+    cEl.textContent = n || '0'; cEl.className = 'stat-val' + (n > 0 ? ' lit' : '');
+    const lEl = document.getElementById('s-last');
+    if (evs[0]) { lEl.textContent = fmt(evs[0].triggered_at); lEl.className = 'stat-val lit'; }
 
-    const mEl = document.getElementById('s-motion');
-    mEl.textContent = cnt || '0';
-    mEl.className = `stat-number${cnt > 0 ? ' active' : ''}`;
-    document.getElementById('bar-motion').className = `stat-tile-bar${cnt > 0 ? ' active' : ''}`;
-
-    if (evs[0]) {
-      document.getElementById('s-last').textContent = twTime(evs[0].triggered_at);
-      document.getElementById('s-last').className = 'stat-number active';
-      document.getElementById('bar-last').className = 'stat-tile-bar active';
-    }
-
+    // 起床時間：今天 05:00–11:00 第一筆
     const wk = [...evs].reverse().find(e => {
-      const h = parseInt(new Date(e.triggered_at)
-        .toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(11, 13));
+      const h = parseInt(new Date(e.triggered_at).toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(11, 13));
       return h >= 5 && h <= 11;
     });
-    if (wk) {
-      document.getElementById('s-wake').textContent = twTime(wk.triggered_at);
-      document.getElementById('s-wake').className = 'stat-number active';
-      document.getElementById('bar-wake').className = 'stat-tile-bar active';
-    }
+    const wEl = document.getElementById('s-wake');
+    if (wk) { wEl.textContent = fmt(wk.triggered_at); wEl.className = 'stat-val lit'; }
 
-    // Scenarios today
-    const allD = await sbGet('ai_decisions',
-      `user_id=eq.${UID}&created_at=gte.${todayStart}&order=created_at.desc`
-    );
+    // ── AI decisions today
+    const all = await get('ai_decisions', `user_id=eq.${UID}&created_at=gte.${t0}&order=created_at.desc`);
     const byS = {};
-    allD.forEach(x => { if (!byS[x.scenario]) byS[x.scenario] = x; });
+    all.forEach(x => { if (!byS[x.scenario]) byS[x.scenario] = x; });
+
+    // ── S2 補丁：sensor_events 有早晨記錄就直接顯示「已起床」
+    // 不依賴 ai_decisions，讓狀態即時反映
+    const morningWakeup = evs.find(e => {
+      const h = parseInt(new Date(e.triggered_at).toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(11, 13));
+      return h >= 5 && h <= 11;
+    });
 
     document.getElementById('sc-list').innerHTML = [1, 2, 3, 4, 5].map(i => {
-      const dd = byS[i];
-      const srk = dd?.risk_level || 'none';
-      const iconColor = srk === 'low' ? 'var(--good)' : srk === 'watch' ? 'var(--warn)' : srk === 'alert' ? 'var(--danger)' : 'var(--ink3)';
-      return `<div class="sc-item">
-        <div class="sc-icon-box ${srk}" style="color:${iconColor}">${SC_SVG[i]}</div>
-        <div class="sc-text">
-          <div class="sc-name">${SC_NAMES[i]}</div>
-          <div class="sc-desc">${dd?.ai_reasoning || '等待感測器觸發'}</div>
+      let dd = byS[i];
+      let srk = dd?.risk_level || 'none';
+      let desc = dd?.ai_reasoning || '等待感測器觸發';
+      let timeStr = dd ? fmt(dd.created_at) : '—';
+
+      // S2 特殊處理：有起床記錄直接顯示已起床，不等 n8n 排程
+      if (i === 2) {
+        if (morningWakeup) {
+          srk = 'low';
+          desc = `今日 ${fmt(morningWakeup.triggered_at)} 偵測到起床活動`;
+          timeStr = fmt(morningWakeup.triggered_at);
+        } else {
+          const h = twHour();
+          if (h >= 5 && h < 11) {
+            // 早晨時段但還沒起床
+            srk = 'none';
+            desc = '尚未偵測到起床活動';
+          } else if (h >= 11) {
+            // 超過 11 點還沒起床，可能需要注意
+            srk = dd?.risk_level || 'watch';
+            desc = dd?.ai_reasoning || '今日尚未偵測到起床活動';
+          }
+        }
+      }
+
+      return `<div class="sc-row">
+        <div class="sc-icon ${srk}">${SCSVG[i]}</div>
+        <div class="sc-info">
+          <div class="sc-name">${SCNAME[i]}</div>
+          <div class="sc-desc">${desc}</div>
         </div>
         <div class="sc-right">
-          <span class="sc-pill ${srk}">${BL[srk]}</span>
-          <span class="sc-time">${dd ? twTime(dd.created_at) : '今日尚無'}</span>
+          <span class="sc-badge ${srk}">${BL[srk]}</span>
+          <span class="sc-t">${timeStr}</span>
         </div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-left:4px;flex-shrink:0">
-          <path d="M9 18L15 12L9 6" stroke="var(--ink4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
       </div>`;
     }).join('');
 
-    // Report
-    const yesterdayStart = yesterdayISO();
-    const yesterdayStr = new Date(Date.now() - 864e5)
-      .toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(0, 10);
-    const reps = await sbGet('daily_reports', `user_id=eq.${UID}&report_date=eq.${yesterdayStr}`);
-    if (reps[0]) {
-      document.getElementById('report-sub').textContent =
-        reps[0].risk_summary === 'normal' ? '昨日一切正常，點此查看' : '昨日有需關注項目，點此查看';
-    }
+    // ── Report
+    const reps = await get('daily_reports', `user_id=eq.${UID}&report_date=eq.${yestStr()}`);
+    if (reps[0]) document.getElementById('report-sub').textContent =
+      reps[0].risk_summary === 'normal' ? '昨日一切正常，點此查看' : '昨日有需關注項目，點此查看';
 
-  } catch (e) {
-    console.error('loadAll error:', e);
+  } catch(e) {
+    console.error(e);
     document.getElementById('sc-list').innerHTML =
-      `<div style="padding:24px;text-align:center;color:var(--ink3);font-size:13px">資料載入失敗<br><span style="font-size:11px;color:var(--ink4)">${e.message}</span></div>`;
+      `<div style="padding:20px;text-align:center;color:var(--t3);font-size:12px">載入失敗 — ${e.message}</div>`;
   }
 }
 
-function openOnboarding()  { document.getElementById('ob-overlay').classList.add('open'); }
-function closeOnboarding() {
-  document.getElementById('ob-overlay').classList.remove('open');
-  localStorage.setItem(OB_KEY, '1');
-}
-function checkOnboarding() {
-  if (!localStorage.getItem(OB_KEY)) openOnboarding();
-}
-document.getElementById('ob-overlay').addEventListener('click', e => {
-  if (e.target === e.currentTarget) closeOnboarding();
-});
+function openOb()  { document.getElementById('ob').classList.add('open'); }
+function closeOb() { document.getElementById('ob').classList.remove('open'); localStorage.setItem(OBK, '1'); }
+if (!localStorage.getItem(OBK)) openOb();
+document.getElementById('ob').addEventListener('click', e => { if (e.target === e.currentTarget) closeOb(); });
+function openOnboarding() { openOb(); }
 
 async function loadSettings() {
   try {
-    const data = await sbGet('user_settings', `user_id=eq.${UID}&limit=1`);
-    const s = data[0]; if (!s) return;
-    if (s.elder_name)       document.getElementById('f-name').value      = s.elder_name;
-    if (s.wakeup_time)      document.getElementById('f-wakeup').value     = s.wakeup_time.slice(0, 5);
-    if (s.nap_start)        document.getElementById('f-nap-start').value  = s.nap_start.slice(0, 5);
-    if (s.nap_duration_min) document.getElementById('f-nap-dur').value    = s.nap_duration_min;
-    if (s.outing_start)     document.getElementById('f-out-start').value  = s.outing_start.slice(0, 5);
-    if (s.outing_end)       document.getElementById('f-out-end').value    = s.outing_end.slice(0, 5);
-  } catch(e) { console.error('loadSettings error:', e); }
+    const s = (await get('user_settings', `user_id=eq.${UID}&limit=1`))[0];
+    if (!s) return;
+    if (s.elder_name)       document.getElementById('f-name').value     = s.elder_name;
+    if (s.wakeup_time)      document.getElementById('f-wakeup').value   = s.wakeup_time.slice(0, 5);
+    if (s.nap_start)        document.getElementById('f-nap').value      = s.nap_start.slice(0, 5);
+    if (s.nap_duration_min) document.getElementById('f-napdur').value   = s.nap_duration_min;
+    if (s.outing_start)     document.getElementById('f-outstart').value = s.outing_start.slice(0, 5);
+    if (s.outing_end)       document.getElementById('f-outend').value   = s.outing_end.slice(0, 5);
+  } catch(e) {}
 }
-
-function openSettings()  { loadSettings(); document.getElementById('modal-bg').classList.add('open'); }
-function closeSettings() { document.getElementById('modal-bg').classList.remove('open'); }
-document.getElementById('modal-bg').addEventListener('click', e => {
-  if (e.target === e.currentTarget) closeSettings();
-});
+function openSettings()  { loadSettings(); document.getElementById('modal').classList.add('open'); }
+function closeSettings() { document.getElementById('modal').classList.remove('open'); }
+document.getElementById('modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSettings(); });
 
 async function saveSettings() {
   try {
-    const ex = await sbGet('user_settings', `user_id=eq.${UID}&limit=1`);
-    const method = ex.length > 0 ? 'PATCH' : 'POST';
-    const url = ex.length > 0
-      ? `${SB_URL}/rest/v1/user_settings?user_id=eq.${UID}`
-      : `${SB_URL}/rest/v1/user_settings`;
+    const ex = await get('user_settings', `user_id=eq.${UID}&limit=1`);
+    const method = ex.length ? 'PATCH' : 'POST';
+    const url = ex.length
+      ? `${SB}/rest/v1/user_settings?user_id=eq.${UID}`
+      : `${SB}/rest/v1/user_settings`;
     await fetch(url, {
       method,
-      headers: {
-        'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`,
-        'Content-Type': 'application/json', 'Prefer': 'return=minimal'
-      },
+      headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
       body: JSON.stringify({
         user_id:         parseInt(UID),
         elder_name:      document.getElementById('f-name').value || null,
         wakeup_time:     document.getElementById('f-wakeup').value || null,
-        nap_start:       document.getElementById('f-nap-start').value || null,
-        nap_duration_min:parseInt(document.getElementById('f-nap-dur').value) || null,
-        outing_start:    document.getElementById('f-out-start').value || null,
-        outing_end:      document.getElementById('f-out-end').value || null,
+        nap_start:       document.getElementById('f-nap').value || null,
+        nap_duration_min:parseInt(document.getElementById('f-napdur').value) || null,
+        outing_start:    document.getElementById('f-outstart').value || null,
+        outing_end:      document.getElementById('f-outend').value || null,
         updated_at:      new Date().toISOString()
       })
     });
     closeSettings();
     const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
-  } catch(e) {
-    alert('儲存失敗，請稍後再試');
-  }
+    t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000);
+  } catch(e) { alert('儲存失敗'); }
 }
 
-loadAll();
-checkOnboarding();
-setInterval(loadAll, DLIGHT_CONFIG.REFRESH_INTERVAL_MS);
+load();
+setInterval(load, DLIGHT_CONFIG.REFRESH_INTERVAL_MS);
 </script>
 </body>
 </html>
