@@ -361,7 +361,9 @@ function todayISO() {
   return new Date(d + 'T00:00:00+08:00').toISOString();
 }
 function yestStr() {
-  return new Date(Date.now() - 864e5).toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(0, 10);
+  return new Date(Date.now() - 864e5)
+    .toLocaleString('sv-SE', { timeZone: 'Asia/Taipei' })
+    .slice(0, 10);
 }
 function twHour() {
   return parseInt(new Date().toLocaleString('sv-SE', { timeZone:'Asia/Taipei' }).slice(11, 13));
@@ -373,17 +375,27 @@ async function load() {
 
     // ── Latest AI decision
     const ds = await get('ai_decisions', `user_id=eq.${UID}&order=created_at.desc&limit=1`);
-    const d = ds[0]; const rk = d?.risk_level || 'low'; const ri = RISK[rk];
+    const d = ds[0];
+    const rk = d?.risk_level || 'low';
+    const ri = RISK[rk];
     document.getElementById('hero-tag').className = `status-tag ${ri.cls}`;
-    document.getElementById('tag-txt').textContent   = ri.label;
-    document.getElementById('hero-title').textContent = d ? ri.title : '連接中';
-    document.getElementById('hero-body').textContent  = d?.ai_reasoning || '正在連接系統...';
-    document.getElementById('hero-time').textContent  = d ? rel(d.created_at) : '';
-    const at = document.getElementById('ai-tag');
-    if (d?.ai_source) {
+    document.getElementById('tag-txt').textContent = ri.label;
+
+    if (d) {
+      document.getElementById('hero-title').textContent = ri.title;
+      document.getElementById('hero-body').textContent  = d.ai_reasoning;
+      document.getElementById('hero-time').textContent  = rel(d.created_at);
+      const at = document.getElementById('ai-tag');
       at.style.display = 'inline-block';
       at.className = `ai-tag ${d.ai_source === 'claude_fallback' ? 'cl' : 'ds'}`;
       at.textContent = d.ai_source === 'claude_fallback' ? 'Claude' : 'DeepSeek';
+    } else {
+      // 沒有資料時的 empty state
+      document.getElementById('hero-tag').className = 'status-tag low';
+      document.getElementById('tag-txt').textContent = '系統就緒';
+      document.getElementById('hero-title').textContent = '等待感測器觸發';
+      document.getElementById('hero-body').textContent  = '感應器偵測到動作後，AI 將自動開始分析並顯示照護狀態。';
+      document.getElementById('hero-time').textContent  = '';
     }
 
     // ── Sensor events today
